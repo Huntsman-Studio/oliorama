@@ -23,6 +23,7 @@ node_modules/
 *.sqlite
 
 *.png
+!screenshot.png
 *.svg
 *.jpg
 *.jpeg
