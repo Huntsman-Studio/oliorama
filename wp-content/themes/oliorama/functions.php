@@ -1,5 +1,7 @@
 <?php
 
+include 'inc/functions/set-image-data.php';
+
 if ( ! defined( 'OLIORAMA_DIR_PATH' ) ) {
 	define( 'OLIORAMA_DIR_PATH', untrailingslashit( get_template_directory() ) );
 }
@@ -46,3 +48,5 @@ function oliorama_register_styles() {
 	wp_register_style( 'main-css', OLIORAMA_BUILD_CSS_URI . '/main.css', [], filemtime( OLIORAMA_BUILD_CSS_DIR_PATH . '/main.css' ), 'all' );
 	wp_enqueue_style( 'main-css' );
 }
+
+?>

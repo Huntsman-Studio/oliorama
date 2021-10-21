@@ -22,6 +22,7 @@
 	<a class="skip-link screen-reader-text" href="#content"></a>
 
 	<?php get_template_part( 'templates/header/site-header' ); ?>
+	<?php get_template_part( 'templates/header/site-menu' ); ?>
 
 	<div id="content" class="site-content">
 		<div id="primary" class="content-area">
