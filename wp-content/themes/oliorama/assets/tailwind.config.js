@@ -13,7 +13,7 @@ module.exports = {
         ...theme('colors'),
         'primary': '#0C0C0C',
         'secondary': '#4C4C4C',
-        'danger': '#e3342f',
+        'danger': '#191919',
       }),
 
       // text color

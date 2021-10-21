@@ -11,7 +11,7 @@
 <header class="flex justify-center items-center bg-primary pl-4 pr-4 pt-8 pb-8" role="banner">
 	<!-- Left -->
 	<div class="flex-none w-20">
-		<div class="flex justify-center items-center w-12 h-12 rounded-full bg-white">
+		<div onclick="openNav()" class="flex justify-center items-center w-12 h-12 rounded-full bg-white cursor-pointer">
 			<svg class="menu-icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
 				<path class="a" d="M0,0H24V24H0Z"/>
 				<line class="b" x2="16" transform="translate(4 8)"/>

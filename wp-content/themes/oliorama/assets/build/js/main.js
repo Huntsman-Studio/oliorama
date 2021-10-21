@@ -108,7 +108,16 @@
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _sass_main_scss__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../sass/main.scss */ "./sass/main.scss");
 /* harmony import */ var _sass_main_scss__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_sass_main_scss__WEBPACK_IMPORTED_MODULE_0__);
+ // Open navigation
 
+function openNav() {
+  document.getElementById('nav').classList.remove('hidden');
+} // Close navigation
+
+
+function closeNav() {
+  document.getElementById('nav').classList.add('hidden');
+}
 
 /***/ })
 
