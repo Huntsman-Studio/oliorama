@@ -2,3 +2,32 @@
 @import "tailwindcss/base";
 @import "tailwindcss/components";
 @import "tailwindcss/utilities";
+
+// menu icon
+svg.menu-icon{
+    .a,
+    .b {
+        fill: none;
+    }
+
+    .b {
+        stroke: #000;
+        stroke-linecap: round;
+        stroke-linejoin: round;
+        stroke-width: 1.5px;
+    }
+}
+
+// logo
+svg.logo{
+    .a {
+        fill: #fff;
+    }
+}
+
+// search icon
+svg.search-icon{
+    .a {
+        fill: #7F7F7F;
+    }
+}
