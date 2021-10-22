@@ -46,9 +46,13 @@ add_action( 'wp_enqueue_scripts', 'oliorama_register_styles' );
 
 function oliorama_register_styles() {
 	wp_register_style( 'main-css', OLIORAMA_BUILD_CSS_URI . '/main.css', [], filemtime( OLIORAMA_BUILD_CSS_DIR_PATH . '/main.css' ), 'all' );
-	wp_register_style( 'main-js', OLIORAMA_BUILD_JS_URI . '/main.js', [], filemtime( OLIORAMA_BUILD_JS_DIR_PATH . '/main.js' ), 'all' );
 	wp_enqueue_style( 'main-css' );
-	wp_enqueue_style( 'main-js' );
 }
 
+// add_action( 'wp_enqueue_scripts', 'oliorama_register_scripts' );
+
+// function oliorama_register_scripts() {
+// 	wp_register_script( 'main-js', OLIORAMA_BUILD_JS_URI . '/main.js', [], filemtime( OLIORAMA_BUILD_JS_DIR_PATH . '/main.js' ), 'all' );
+// 	wp_enqueue_script( 'main-js' );
+// }
 ?>
