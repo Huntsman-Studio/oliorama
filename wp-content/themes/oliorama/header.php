@@ -13,6 +13,19 @@
 <head>
 	<meta charset="<?php bloginfo( 'charset' ); ?>" />
 	<meta name="viewport" content="width=device-width, initial-scale=1" />
+
+	<!-- scripts -->
+	<script type="text/javascript">
+		// Open navigation
+		function openNav(){
+			document.getElementById('nav').classList.remove('hidden');
+		}
+
+		// Close navigation
+		function closeNav(){
+			document.getElementById('nav').classList.add('hidden');
+		}
+	</script>
 	<?php wp_head(); ?>
 </head>
 
