@@ -6,7 +6,7 @@
                 <h1 class="text-gray-cloud font-normal text-2xl">Products</h1>
             </div>
             <!-- Line -->
-            <div class="border bg-carbon-gray border-solid"></div>
+            <div class="border border-carbon-gray border-solid"></div>
             <!-- Menus -->
             <div class="pt-5">
                 <ul class="list-none menu">
@@ -49,7 +49,7 @@
                 </ul>
             </div>
             <!-- Line -->
-            <div class="border bg-dark-gray border-solid mt-7"></div>
+            <div class="border border-dark-gray border-solid mt-7"></div>
             <!-- Menu Items -->
             <div class="grid justify-center pt-9">
                 <ul class="list-none text-center">

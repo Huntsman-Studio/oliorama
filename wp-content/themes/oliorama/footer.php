@@ -10,9 +10,24 @@
 			</main><!-- #main -->
 		</div><!-- #primary -->
 	</div><!-- #content -->
-	<footer id="colophon" class="flex justify-center" role="contentinfo">
-        <h3>Footer</h3>
-	</footer><!-- #colophon -->
+	<footer id="colophon" class="bg-gray-wolf pl-10 pr-10 pt-16 pb-10" role="contentinfo">
+        <div class="grid justify-center w-full">
+			<!-- logo -->
+			<div class="pb-16">
+				<?php get_template_part( 'templates/footer/footer-logo' ); ?>
+			</div>
+			<!-- Footer Navigatiom -->
+			<div class="flex justify-center items-center">
+				<?php get_template_part( 'templates/footer/footer-nav' ); ?>
+			</div>
+			<!-- line -->
+			<div class="border border-dark-gray border-solid mt-10 w-ful"></div>
+			<!-- bottom -->
+			<div class="flex justify-center items-center gap-9 pt-14">
+				<?php get_template_part( 'templates/footer/bottom-bar' ); ?>
+			</div>
+		</div>
+	</footer>
 
 </div><!-- #page -->
 

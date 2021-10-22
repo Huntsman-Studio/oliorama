@@ -42,7 +42,24 @@ module.exports = {
         'gold': '#ffd21d',
         'candy': '#f71c31',
         'mint': '#1cce9f'
-      }
+      },
+
+      borderColor: theme => ({
+        ...theme('colors'),
+        'davys-gray': '#0C0C0C',
+        'gray-wolf': '#191919',
+        'dark-gray': '#333333',
+        'carbon-gray': '#4C4C4C',
+        'dim-gray': '#666666',
+        'gray-goose': '#7f7f7f',
+        'gray-cloud': '#b2b2b2',
+        'gainsboro': '#cccccc',
+        'light-gray': '#e5e5e5',
+        'fire': '#ffbc21',
+        'gold': '#ffd21d',
+        'candy': '#f71c31',
+        'mint': '#1cce9f'
+      })
     },
   },
   variants: {
