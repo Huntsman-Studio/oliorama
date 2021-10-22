@@ -8,7 +8,7 @@
  */
 ?>
 
-<header class="flex justify-center items-center bg-primary pl-4 pr-4 pt-8 pb-8" role="banner">
+<header class="flex justify-center items-center bg-davys-gray pl-4 pr-4 pt-8 pb-8" role="banner">
 	<!-- Left -->
 	<div class="flex-none w-20">
 		<div onclick="openNav()" class="flex justify-center items-center w-12 h-12 rounded-full bg-white cursor-pointer">
