@@ -51,8 +51,8 @@
 			</div>
 			<!-- basket -->
 			<div>
-				<div class="flex justify-center items-center rounded-full w-8 h-8 bg-opacity-70 bg-secondary">
-					<p class="text-gray1 font-normal text-base">
+				<div class="flex justify-center items-center rounded-full w-8 h-8 bg-opacity-70 bg-carbon-gray">
+					<p class="text-gray-cloud font-normal text-base">
 						<?php echo WC()->cart->cart_contents_count ?>
 					</p>
 				</div>
