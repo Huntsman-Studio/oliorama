@@ -4,23 +4,6 @@ if (!defined('ABSPATH')) die('Access denied.');
 
 global $current_user, $simba_two_factor_authentication;
 
-if (!empty($_REQUEST['_tfa_activate_nonce']) && !empty($_POST['tfa_enable_tfa']) && wp_verify_nonce($_REQUEST['_tfa_activate_nonce'], 'tfa_activate') && !empty($_GET['settings-updated'])) {
-	$simba_two_factor_authentication->change_tfa_enabled_status($current_user->ID, $_POST['tfa_enable_tfa']);
-	$tfa_settings_saved = true;
-} elseif (!empty($_REQUEST['_tfa_algorithm_nonce']) && !empty($_POST['tfa_algorithm_type']) && !empty($_GET['settings-updated']) && wp_verify_nonce($_REQUEST['_tfa_algorithm_nonce'], 'tfa_algorithm')) {
-
-	$old_algorithm = $totp_controller->get_user_otp_algorithm($current_user->ID);
-	
-	if ($old_algorithm != $_POST['tfa_algorithm_type']) {
-		$totp_controller->changeUserAlgorithmTo($current_user->ID, $_POST['tfa_algorithm_type']);
-	}
-
-	$tfa_settings_saved = true;
-}
-
-if (isset($_GET['warning_button_clicked']) && 1 == $_GET['warning_button_clicked'] && !empty($_REQUEST['resyncnonce']) && wp_verify_nonce($_REQUEST['resyncnonce'], 'tfaresync')) {
-	delete_user_meta($current_user->ID, 'tfa_hotp_off_sync');
-}
 ?>
 <style>
 	#icon-tfa-plugin {
@@ -37,15 +20,14 @@ if (isset($_GET['warning_button_clicked']) && 1 == $_GET['warning_button_clicked
 
 	<?php
 
-		if (isset($tfa_settings_saved)) {
+		if (!empty($tfa_settings_saved)) {
 			echo '<div class="updated notice is-dismissible">'."<p><strong>".__('Settings saved.', 'two-factor-authentication')."</strong></p></div>";
 		}
 
-		$simba_two_factor_authentication->settings_intro_notices();
+		$simba_two_factor_authentication->include_template('settings-intro-notices.php');
 
 	?>
 	
-	<!-- New Radios to enable/disable tfa -->
 	<form method="post" action="<?php print esc_url(add_query_arg('settings-updated', 'true', $_SERVER['REQUEST_URI'])); ?>">
 	
 		<?php wp_nonce_field('tfa_activate', '_tfa_activate_nonce', false, true); ?>

@@ -96,7 +96,32 @@ class Simba_TFA_Admin_Dashboard_Integration {
 	 * Include the user settings page code
 	 */
 	public function show_user_settings_page() {
+		
+		global $current_user;
+		
 		$totp_controller = $this->tfa->get_totp_controller();
+		
+		if (!empty($_REQUEST['_tfa_activate_nonce']) && !empty($_POST['tfa_enable_tfa']) && wp_verify_nonce($_REQUEST['_tfa_activate_nonce'], 'tfa_activate') && !empty($_GET['settings-updated'])) {
+			$this->tfa->change_tfa_enabled_status($current_user->ID, $_POST['tfa_enable_tfa']);
+			$tfa_settings_saved = true;
+		}
+		
+		// TODO: This should go in the TOTP class
+		if (!empty($_REQUEST['_tfa_algorithm_nonce']) && !empty($_POST['tfa_algorithm_type']) && !empty($_GET['settings-updated']) && wp_verify_nonce($_REQUEST['_tfa_algorithm_nonce'], 'tfa_algorithm')) {
+			
+			$old_algorithm = $totp_controller->get_user_otp_algorithm($current_user->ID);
+			
+			if ($old_algorithm != $_POST['tfa_algorithm_type']) {
+				$totp_controller->changeUserAlgorithmTo($current_user->ID, $_POST['tfa_algorithm_type']);
+			}
+			
+			$tfa_settings_saved = true;
+		}
+		
+		if (!empty($_GET['warning_button_clicked']) && !empty($_REQUEST['resyncnonce']) && wp_verify_nonce($_REQUEST['resyncnonce'], 'tfaresync')) {
+			delete_user_meta($current_user->ID, 'tfa_hotp_off_sync');
+		}
+		
 		include SIMBA_TFA_PLUGIN_DIR.'/includes/user_settings.php';
 	}
 	

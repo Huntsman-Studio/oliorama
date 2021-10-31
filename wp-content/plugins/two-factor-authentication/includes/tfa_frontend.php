@@ -198,33 +198,7 @@ class TFA_Frontend {
 
 		global $current_user;
 		
-		// We want to print to buffer, since the shortcode API wants the value returned, not echoed
-		ob_start();
-
-		if (!$this->mother->is_activated_for_user($current_user->ID)) {
-			_e('Two factor authentication is not available for your user.', 'two-factor-authentication');
-		} else {
-
-			?>
-
-			<div class="wrap" style="padding-bottom:10px">
-				
-				<?php $this->mother->settings_intro_notices(); ?>
-				
-				<?php $this->settings_enable_or_disable_output(); ?>
-
-				<?php $this->mother->current_codes_box(false); ?>
-
-				<?php $this->mother->advanced_settings_box(array($this, 'save_settings_button')); ?>
-				
-			</div>
-			
-			<?php $this->save_settings_javascript_output(); ?>
-
-			<?php
-		}
-
-		return ob_get_clean();
+		return $this->mother->include_template('shortcode-tfa-user-settings.php', array('is_activated_for_user' => $current_user->ID, 'tfa_frontend' => $this), true);
 
 	}
 }

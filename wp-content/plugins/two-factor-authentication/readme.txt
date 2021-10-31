@@ -2,7 +2,7 @@
 Tags: two factor, 2fa, tfa, two factor auth, google authenticator
 Requires at least: 3.4
 Tested up to: 5.8
-Stable tag: 1.12.1
+Stable tag: 1.12.2
 Requires PHP: 5.6
 Author: DavidAnderson
 Contributors: DavidAnderson, DNutbourne
@@ -156,7 +156,11 @@ Note that the two factor authentication plugin has no mechanism to compare or ap
 
 == Changelog ==
 
+= 1.12.2 - 21/Oct/2021 =
+
+* FIX: Prevent load-order related fatal error (regression since 1.12.0) on sites that did not have AUTH_KEY defined in wp-config.php
 * TWEAK: Update updater library in Premium version to latest version
+* TWEAK: Introduce templating method for better code organisation
 
 = 1.12.1 - 18/Oct/2021 =
 
@@ -709,4 +713,4 @@ Note that the two factor authentication plugin has no mechanism to compare or ap
 * User interface simplified/de-cluttered
 
 == Upgrade Notice ==
-* 1.12.1 : Major re-factor. If you had hand-written custom PHP code that hooks into any internal classes, you will want to review your customisations carefully first.
+* 1.12.2 : Major re-factor. If you had hand-written custom PHP code that hooks into any internal classes, you will want to review your customisations carefully first. 1.12.2 fixes a regression in 1.12.0 for sites without AUTH_KEY defined in wp-config.php

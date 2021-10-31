@@ -44,6 +44,14 @@ class Simba_TFA_Provider_TOTP {
 		
 		$this->otp_helper = new HOTP();
 		
+		add_action('plugins_loaded', array($this, 'plugins_loaded'));
+		
+	}
+	
+	/**
+	 * Runs upon the WP action plugins_loaded
+	 */
+	public function plugins_loaded() {
 		$this->time_window_size = apply_filters('simbatfa_time_window_size', 30);
 		$this->check_back_time_windows = apply_filters('simbatfa_check_back_time_windows', 2);
 		$this->check_forward_time_windows = apply_filters('simbatfa_check_forward_time_windows', 1);
@@ -51,7 +59,6 @@ class Simba_TFA_Provider_TOTP {
 		
 		$this->salt_prefix = defined('AUTH_SALT') ? AUTH_SALT : wp_salt('auth');
 		$this->pw_prefix = defined('AUTH_KEY') ? AUTH_KEY : get_site_option('auth_key');
-		
 	}
 	
 	/**

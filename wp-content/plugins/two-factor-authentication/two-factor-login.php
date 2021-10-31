@@ -5,7 +5,7 @@ Plugin URI: https://www.simbahosting.co.uk/s3/product/two-factor-authentication/
 Description: Secure your WordPress login forms with two factor authentication - including WooCommerce login forms
 Author: David Anderson, original plugin by Oskar Hane and enhanced by Dee Nutbourne
 Author URI: https://www.simbahosting.co.uk
-Version: 1.12.1
+Version: 1.12.2
 Text Domain: two-factor-authentication
 Domain Path: /languages
 License: GPLv2 or later
@@ -21,7 +21,7 @@ define('SIMBA_TFA_PLUGIN_URL', plugins_url('', __FILE__));
 
 class Simba_Two_Factor_Authentication {
 
-	public $version = '1.12.1';
+	public $version = '1.12.2';
 
 	private $php_required = '5.6';
 
@@ -1369,33 +1369,40 @@ class Simba_Two_Factor_Authentication {
 		return $encode;
 	}
 
-	public function settings_intro_notices() {
-		?>
-		<p class="simba_tfa_personal_settings_notice simba_tfa_intro_notice">
-			<?php
-			
-				echo __('These are your personal settings.', 'two-factor-authentication').' '.__('Nothing you change here will have any effect on other users.', 'two-factor-authentication');
-			
-				if (is_multisite()) {
-					if (is_super_admin()) {
-						// Since WP 4.9
-						$main_site_id = function_exists('get_main_site_id') ? get_main_site_id() : 1;
-						$switched = switch_to_blog($main_site_id);
-						echo ' <a href="'.admin_url('options-general.php?page=two-factor-auth').'">'.__('The site-wide administration options are here.', 'two-factor-authentication').'</a>';
-						if ($switched) restore_current_blog();
-					}
-				} elseif (current_user_can($this->get_management_capability())) { 
-					echo ' <a href="'.admin_url('options-general.php?page=two-factor-auth').'">'.__('The site-wide administration options are here.', 'two-factor-authentication').'</a>';
-				}
-			
-			?>
-		</p>
-		<p class="simba_tfa_verify_tfa_notice simba_tfa_intro_notice"><strong>
-			<?php echo apply_filters('simbatfa_message_you_should_verify', __('If you activate two-factor authentication, then verify that your two-factor application and this page show the same One-Time Password (within a minute of each other) before you log out.', 'two-factor-authentication')); ?></strong> <?php if (current_user_can($this->get_management_capability())) { ?><a href="https://wordpress.org/plugins/two-factor-authentication/faq/"><?php _e('You should also bookmark the FAQs, which explain how to de-activate the plugin even if you cannot log in.', 'two-factor-authentication');?></a><?php } ?>
-		</p>
-		<?php
+	/**
+	 * Return or output view content
+	 *
+	 * @param String  $path                   - path to template, usually relative to templates/ within the plugin directory
+	 * @param Array	  $extract_these		  - key/value pairs for substitution into the scope of the template
+	 * @param Boolean $return_instead_of_echo - what to do with the results
+	 *
+	 * @return String|Void
+	 */
+	public function include_template($path, $extract_these = array(), $return_instead_of_echo = false) {
+		
+		if ($return_instead_of_echo) ob_start();
+		
+		$template_file = apply_filters('simatfa_template_file', SIMBA_TFA_PLUGIN_DIR.'/templates/'.$path, $path, $extract_these, $return_instead_of_echo);
+		
+		do_action('simbatfa_before_template', $path, $return_instead_of_echo, $extract_these, $template_file);
+		
+		if (!file_exists($template_file)) {
+			error_log("TFA: template not found: $template_file (from $path)");
+			echo __('Error:', 'two-factor-authentication').' '.__('two-factor-authentication', 'wp-optimize')." (".$path.")";
+		} else {
+			extract($extract_these);
+			// The following are useful variables which can be used in the template.
+			// They appear as unused, but may be used in the $template_file.
+			$wpdb = $GLOBALS['wpdb'];// phpcs:ignore VariableAnalysis.CodeAnalysis.VariableAnalysis.UnusedVariable -- $wpdb might be used in the included template
+			$simba_tfa = $this;// phpcs:ignore VariableAnalysis.CodeAnalysis.VariableAnalysis.UnusedVariable -- $wp_optimize might be used in the included template
+			include $template_file;
+		}
+		
+		do_action('simbatfa_after_template', $path, $return_instead_of_echo, $extract_these, $template_file);
+		
+		if ($return_instead_of_echo) return ob_get_clean();
 	}
-
+	
 	/**
 	 * Run upon the WP plugins_loaded action
 	 */
