@@ -14,7 +14,7 @@
 	<meta charset="<?php bloginfo( 'charset' ); ?>" />
 	<meta name="viewport" content="width=device-width, initial-scale=1" />
 	<!-- Favicon -->
-	<link rel="icon" type="image/png" href="wp-content/uploads/2021/11/favicon-light.png">
+	<link rel="icon" type="image/png" href="<?php bloginfo('template_directory'); ?>/assets/images/favicon-light.png">
 
 	<!-- scripts -->
 	<script type="text/javascript">
