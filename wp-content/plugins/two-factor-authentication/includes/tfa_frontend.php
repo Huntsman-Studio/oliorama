@@ -1,7 +1,7 @@
 <?php
 if (!defined('ABSPATH')) die('Access denied.');
 
-class TFA_Frontend {
+class Simba_TFA_Frontend {
 
 	private $mother;
 
@@ -44,7 +44,7 @@ class TFA_Frontend {
 				//Re-fetch the algorithm type, url and private string
 				$variables = $this->tfa_fetch_assort_vars();
 				
-				$return_array['qr'] = $this->mother->tfa_qr_code_url($variables['algorithm_type'], $variables['url'], $variables['tfa_priv_key']);
+				$return_array['qr'] = $totp_controller->tfa_qr_code_url($variables['algorithm_type'], $variables['url'], $variables['tfa_priv_key']);
 				$return_array['al_type_disp'] = $this->tfa_algorithm_info($variables['algorithm_type']);
 			}
 			
@@ -159,7 +159,7 @@ class TFA_Frontend {
 		$suffix = defined('SCRIPT_DEBUG') && SCRIPT_DEBUG ? '' : '.min';
 		wp_register_script('jquery-blockui', SIMBA_TFA_PLUGIN_URL . '/includes/jquery.blockUI' . $suffix . '.js', array('jquery'), '2.60');
 		
-		$script_ver = (defined('WP_DEBUG') && WP_DEBUG) ? time() : $this->mother->version;
+		$script_ver = (defined('WP_DEBUG') && WP_DEBUG) ? time() : filemtime(SIMBA_TFA_PLUGIN_DIR.'/includes/frontend-settings.js');
 		
 		wp_enqueue_script('simba-tfa-frontend-settings', SIMBA_TFA_PLUGIN_URL.'/includes/frontend-settings.js', array('jquery-blockui'), $script_ver);
 		

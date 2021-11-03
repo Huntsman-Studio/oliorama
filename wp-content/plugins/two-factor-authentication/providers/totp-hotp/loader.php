@@ -34,6 +34,9 @@ class Simba_TFA_Provider_TOTP {
 	// @var String
 	public $default_hmac = 'totp';
 	
+	// @var Boolean
+	private $settings_saved = false;
+	
 	/**
 	 * Class constructor
 	 *
@@ -45,6 +48,524 @@ class Simba_TFA_Provider_TOTP {
 		$this->otp_helper = new HOTP();
 		
 		add_action('plugins_loaded', array($this, 'plugins_loaded'));
+		
+		add_action('admin_init', array($this, 'admin_init'));
+		
+		if (!is_admin()) {
+			add_action('init', array($this, 'check_possible_reset'));
+		}
+		
+		// Potentially show off-sync message for hotp
+		add_action('admin_notices', array($this, 'tfa_show_hotp_off_sync_message'));
+	}
+	
+	/**
+	 * Return whether or not this class detected and saved new settings
+	 *
+	 * @return Boolean
+	 */
+	public function were_settings_saved() {
+		return $this->settings_saved;
+	}
+	
+	/**
+	 * Runs upon the WP action admin_init
+	 */
+	public function admin_init() {
+		
+		$this->check_possible_reset();
+		
+		global $current_user;
+		
+		if (!empty($_REQUEST['_tfa_activate_nonce']) && !empty($_POST['tfa_enable_tfa']) && wp_verify_nonce($_REQUEST['_tfa_activate_nonce'], 'tfa_activate') && !empty($_GET['settings-updated'])) {
+			$this->tfa->change_tfa_enabled_status($current_user->ID, $_POST['tfa_enable_tfa']);
+			$this->settings_saved = true;
+		}
+		
+		if (!empty($_REQUEST['_tfa_algorithm_nonce']) && !empty($_POST['tfa_algorithm_type']) && !empty($_GET['settings-updated']) && wp_verify_nonce($_REQUEST['_tfa_algorithm_nonce'], 'tfa_algorithm')) {
+			
+			$old_algorithm = $this->get_user_otp_algorithm($current_user->ID);
+			
+			if ($old_algorithm != $_POST['tfa_algorithm_type']) {
+				$this->changeUserAlgorithmTo($current_user->ID, $_POST['tfa_algorithm_type']);
+			}
+			
+			$this->settings_saved = true;
+		}
+		
+		if (!empty($_GET['warning_button_clicked']) && !empty($_REQUEST['resyncnonce']) && wp_verify_nonce($_REQUEST['resyncnonce'], 'tfaresync')) {
+			delete_user_meta($current_user->ID, 'tfa_hotp_off_sync');
+		}
+		
+	}
+	
+	/**
+	 * Enqueue adding of JavaScript for footer
+	 *
+	 */
+	public function add_footer() {
+		
+		static $added_footer = false;
+		if ($added_footer) return;
+		$added_footer = true;
+		
+		$script_ver = (defined('WP_DEBUG') && WP_DEBUG) ? time() : filemtime(SIMBA_TFA_PLUGIN_DIR."/includes/jquery-qrcode/$script_file");
+		$script_file = (defined('SCRIPT_DEBUG') && SCRIPT_DEBUG) ? 'jquery-qrcode.js' : 'jquery-qrcode.min.js';
+		wp_enqueue_script('jquery-qrcode', SIMBA_TFA_PLUGIN_URL."/includes/jquery-qrcode/$script_file", array('jquery'), $script_ver);
+		add_action(is_admin() ? 'admin_footer' : 'wp_footer', array($this, 'footer'));
+		
+	}
+	
+	/**
+	 * Runs upon the WP actions wp_footer and admin_footer. Adds the necessary JavaScript for rendering and updating QR codes, and handling trusted devices removal in the admin area
+	 */
+	public function footer() {
+		$ajax_url = admin_url('admin-ajax.php');
+		// It's possible that FORCE_ADMIN_SSL will make that SSL, whilst the user is on the front-end having logged in over non-SSL - and as a result, their login cookies won't get sent, and they're not registered as logged in.
+		if (!is_admin() && substr(strtolower($ajax_url), 0, 6) == 'https:' && !is_ssl()) {
+			$also_try = 'http:'.substr($ajax_url, 6);
+		}
+		?>
+		<script>
+		jQuery(function($) {
+			
+			// Render any QR codes
+			$('.simbaotp_qr_container').qrcode({
+				'render': 'image',
+				'text': $('.simbaotp_qr_container:first').data('qrcode'),
+			});
+			
+			function update_otp_code() {
+				$('.simba_current_otp').html('<em><?php echo esc_attr(__('Updating...', 'two-factor-authentication'));?></em>');
+				
+				$.post('<?php echo esc_js($ajax_url);?>', {
+					action: 'simbatfa_shared_ajax',
+					subaction: 'refreshotp',
+					nonce: '<?php echo esc_js(wp_create_nonce('tfa_shared_nonce'));?>'
+				}, function(response) {
+					var got_code = '';
+				try {
+					var resp = JSON.parse(response);
+					got_code = resp.code;
+				} catch(err) {
+					<?php if (!isset($also_try)) { ?>
+						alert("<?php echo esc_js(__('Response:', 'two-factor-authentication')); ?> "+response);
+					<?php } ?>
+					console.log(response);
+					console.log(err);
+				}
+				<?php
+				if (isset($also_try)) {
+					?>
+					$.post('<?php echo esc_js($also_try);?>', {
+						action: 'simbatfa_shared_ajax',
+						subaction: 'refreshotp',
+						nonce: '<?php echo esc_js(wp_create_nonce('tfa_shared_nonce'));?>'
+					}, function(response) {
+						try {
+							var resp = JSON.parse(response);
+							if (resp.code) {
+								$('.simba_current_otp').html(resp.code);
+							} else {
+								console.log(response);
+								console.log("TFA: no code found");
+							}
+						} catch(err) {
+							alert("<?php echo esc_js(__('Response:', 'two-factor-authentication')); ?> "+response);
+							console.log(response);
+							console.log(err);
+						}
+					});
+					<?php } else { ?>
+						if ('' != got_code) {
+							$('.simba_current_otp').html(got_code);
+						} else {
+							console.log("TFA: no code found");
+						}
+					<?php } ?>
+				});
+			}
+			
+			var min_refresh_after = 30;
+			
+			if (0 == $('body.settings_page_two-factor-auth').length) {
+				$('.simba_current_otp').each(function(ind, obj) {
+					var refresh_after = $(obj).data('refresh_after');
+					if (refresh_after > 0 && refresh_after < min_refresh_after) {
+						min_refresh_after = refresh_after;
+					}
+				});
+				
+				// Update after the given seconds, and then every 30 seconds
+				setTimeout(function() {
+					setInterval(update_otp_code, 30000)
+					update_otp_code();
+				}, min_refresh_after * 1000);
+			}
+			
+			// Handle clicks on the 'refresh' link
+			$('.simbaotp_refresh').on('click', function(e) {
+				e.preventDefault();
+				update_otp_code();
+			});
+			
+			$('#tfa_trusted_devices_box').on('click', '.simbatfa-trust-remove', function(e) {
+				e.preventDefault();
+				var device_id = $(this).data('trusted-device-id');
+				$(this).parents('.simbatfa_trusted_device').css('opacity', '0.5');
+				if ('undefined' !== typeof device_id) {
+					$.post('<?php echo esc_js($ajax_url);?>', {
+						action: 'simbatfa_shared_ajax',
+						subaction: 'untrust_device',
+						nonce: '<?php echo esc_js(wp_create_nonce('tfa_shared_nonce'));?>',
+						   device_id: device_id
+					}, function(response) {
+						var resp = JSON.parse(response);
+						if (resp.hasOwnProperty('trusted_list')) {
+							$('#tfa_trusted_devices_box_inner').html(resp.trusted_list);
+						}
+					});
+				}
+			});
+		});
+		</script>
+		<?php
+	}
+	
+	/**
+	 * Return a link to refresh the current OTP code
+	 *
+	 * @return String
+	 */
+	public function refresh_current_otp_link() {
+		return '<a href="#" class="simbaotp_refresh">'.__('(update)', 'two-factor-authentication').'</a>';
+	}
+	
+	/**
+	 * Echo the radio buttons for changing between TOTP/HOTP
+	 * 
+	 * TODO: Hide this choice on new installs (TOTP only)
+	 *
+	 * @param Integer $user_id
+	 */
+	protected function print_algorithm_choice_radios($user_id) {
+		if (!$user_id) return;
+		
+		$types = array(
+			'totp' => __('TOTP (time based - most common algorithm; used by Google Authenticator)', 'two-factor-authentication'),
+			'hotp' => __('HOTP (event based)', 'two-factor-authentication')
+		); 
+		
+		$setting = $this->get_user_otp_algorithm($user_id);
+		
+		foreach ($types as $id => $name) {
+			print '<input type="radio" id="tfa_algorithm_type_'.esc_attr($id).'" name="tfa_algorithm_type" value="'.$id.'" '.($setting == $id ? 'checked="checked"' :'').'> <label for="tfa_algorithm_type_'.esc_attr($id).'">'.$name."</label><br>\n";
+		}
+	}
+	
+	/**
+	 * Print out the advanced settings box - choice of algorithm
+	 *
+	 * @param Boolean|Callable $submit_button_callback - if not a callback, then <form> tags will be added
+	 */
+	public function advanced_settings_box($submit_button_callback = false) {
+		
+		global $current_user;
+		$algorithm_type = $this->get_user_otp_algorithm($current_user->ID);
+		
+		?>
+		<h2 id="tfa_advanced_heading" style="clear:both;"><?php _e('Advanced settings', 'two-factor-authentication'); ?></h2>
+		
+		<div id="tfa_advanced_box" class="tfa_settings_form" style="margin-top: 20px;">
+		
+		<?php if (false === $submit_button_callback) { ?>
+			<form method="post" action="<?php print esc_url(add_query_arg('settings-updated', 'true', $_SERVER['REQUEST_URI'])); ?>">
+			<?php wp_nonce_field('tfa_algorithm', '_tfa_algorithm_nonce', false, true); ?>
+		<?php } ?>
+			
+		<?php _e('Choose which algorithm for One Time Passwords you want to use.', 'two-factor-authentication'); ?>
+		<p>
+		<?php
+		$this->print_algorithm_choice_radios($current_user->ID);
+		if ('hotp' == $algorithm_type) {
+			$counter = $this->getUserCounter($current_user->ID);
+			print '<br>'.__('Your counter on the server is currently on', 'two-factor-authentication').': '.$counter;
+		}
+		?>
+		
+		</p>
+		<?php if (false === $submit_button_callback) { submit_button(); echo '</form>'; } else { call_user_func($submit_button_callback); } ?>
+		
+		</div>
+		<?php
+	}
+	
+	/**
+	 * Return an HTML snippet for the current OTP code
+	 *
+	 * @param Integer|Boolean $user_id
+	 *
+	 * @return String
+	 */
+	public function current_otp_code($user_id = false) {
+		global $current_user;
+		if (false == $user_id) $user_id = $current_user->ID;
+		$tfa_priv_key_64 = get_user_meta($user_id, 'tfa_priv_key_64', true);
+		if (!$tfa_priv_key_64) $tfa_priv_key_64 = $this->addPrivateKey($user_id);
+		$time_now = time();
+		$refresh_after = 30 - ($time_now % 30);
+		return '<span class="simba_current_otp" data-refresh_after="'.$refresh_after.'">'.$this->generateOTP($user_id, $tfa_priv_key_64).'</span>';
+	}
+	
+	/**
+	 * Runs upon the WP 'init' action - check for possible private key reset request from the user
+	 */
+	public function check_possible_reset() {
+		if (!empty($_GET['simbatfa_priv_key_reset']) && !empty($_REQUEST['nonce']) && wp_verify_nonce($_REQUEST['nonce'], 'simbatfa_reset_private_key')) {
+			$this->reset_private_key_and_emergency_codes();
+			exit;
+		}
+	}
+	
+	/**
+	 * Remove private key and emergency codes for the specified (or logged-in) user
+	 *
+	 * @param Boolean|Integer $user_id	- WP user ID, or false for the currently logged-in user
+	 * @param Boolean		  $redirect - if this is not false, then a redirection will occur - where to depends upon the value of $_REQUEST['noredirect']
+	 */
+	public function reset_private_key_and_emergency_codes($user_id = false, $redirect = true) {
+		
+		if (!$user_id) {
+			global $current_user;
+			$user_id = $current_user->ID;
+		}
+		
+		delete_user_meta($user_id, 'tfa_priv_key_64');
+		delete_user_meta($user_id, 'simba_tfa_emergency_codes_64');
+		
+		if (!$redirect) return;
+		
+		if (empty($_REQUEST['noredirect'])) {
+			// TODO: Re-factoring
+			wp_safe_redirect(admin_url('admin.php').'?page=two-factor-auth-user&settings-updated=1');
+		} else {
+			$url = (is_ssl() ? 'https://' : 'http://') . $_SERVER['HTTP_HOST'] . remove_query_arg(array('simbatfa_priv_key_reset', 'noredirect', 'nonce'));
+			wp_redirect(esc_url_raw($url));
+		}
+	}
+	
+	/**
+	 * Return HTML for a link to reset the current user's private key
+	 *
+	 * @return String
+	 */
+	public function reset_link() {
+		
+		// TODO: Refactoring
+		$url_base = is_admin() ? admin_url('admin.php').'?page=two-factor-auth-user&settings-updated=1' : (( is_ssl() ? 'https://' : 'http://' ) . $_SERVER['HTTP_HOST']);
+		
+		$add_query_args = array('simbatfa_priv_key_reset' => 1);
+		
+		if (!is_admin()) $add_query_args['noredirect'] = 1;
+		
+		$url = $url_base.add_query_arg($add_query_args);
+		
+		$url = wp_nonce_url($url, 'simbatfa_reset_private_key', 'nonce');
+		
+		return '<a href="javascript:if(confirm(\''.__('Warning: if you reset this key you will have to update your apps with the new one. Are you sure you want this?', 'two-factor-authentication').'\')) { window.location = \''.esc_js($url).'\'; }">'.__('Reset private key', 'two-factor-authentication').'</a>';
+		
+	}
+	
+	/**
+	 * Output the current codes box
+	 *
+	 * @param Boolean|Integer $user_id
+	 */
+	public function current_codes_box($user_id = false) {
+		
+		global $current_user;
+		if (false == $user_id) $user_id = $current_user->ID;
+		
+		$admin = is_admin();
+		
+		$this->add_footer();
+		
+		$url = preg_replace('/^https?:\/\//i', '', site_url());
+		
+		// TODO Replace this with an appropriate method
+		$tfa_priv_key_64 = get_user_meta($user_id, 'tfa_priv_key_64', true);
+		if (!$tfa_priv_key_64) $tfa_priv_key_64 = $this->addPrivateKey($user_id);
+		
+		$tfa_priv_key = trim($this->getPrivateKeyPlain($tfa_priv_key_64, $user_id), "\x00..\x1F");
+		
+		$tfa_priv_key_32 = Base32::encode($tfa_priv_key);
+		
+		$algorithm_type = $this->get_user_otp_algorithm($user_id);
+		
+		if ($admin && $current_user->ID != $user_id) {
+			$user = get_user_by('id', $user_id);
+			$user_descrip = htmlspecialchars($user->user_nicename.' - '.$user->user_email);
+			echo '<h2>'.sprintf(__('Current codes (login: %s)', 'two-factor-authentication'), $user_descrip).'</h2>';
+		}
+		
+		?>
+		<div class="postbox" style="clear:both;">
+		
+		<?php if ($admin) { ?>
+			<h3 style="padding: 10px 6px 0px; margin:4px 0 0; cursor: default;">
+			<span style="cursor: default;"><?php echo __('Current one-time password', 'two-factor-authentication').' ';
+			if ($current_user->ID == $user_id) { echo $this->refresh_current_otp_link(); } ?>
+				</span>
+				<div class="inside">
+					<p><strong style="font-size: 3em;"><?php echo $this->current_otp_code($user_id); ?></strong></p>
+				</div>
+				</h3>
+		<?php } else { ?>
+			
+			<div class="inside">
+			<p class="simbatfa-frontend-current-otp" style="font-size: 1.5em; margin-top:6px;">
+				<strong><?php echo __('Current one-time password', 'two-factor-authentication').' '.$this->refresh_current_otp_link(); ?></strong> :
+				
+				<?php
+				// TODO: Compare this with what's in current_otp_code() - why are we not using that?
+				$time_now = time();
+				$refresh_after = 30 - ($time_now % 30);
+				?><span class="simba_current_otp" data-refresh_after="<?php echo $refresh_after; ?>"><?php print $this->generateOTP($user_id, $tfa_priv_key_64); ?></span>
+			
+			</p>
+			</div>
+			
+			<?php } ?>
+			
+			<?php if ($admin) { ?>
+				<h3 style="padding-left: 10px; cursor: default;">
+				<span style="cursor: default;"><?php _e('Setting up - either scan the code, or type in the private key', 'two-factor-authentication'); ?></span>
+				</h3>
+			<?php } else { ?>
+				<h2><?php _e('Setting up', 'two-factor-authentication'); ?></h2>
+			<?php } ?>
+			
+			<div class="inside">
+			<p>
+			<?php
+			_e('For OTP apps that support using a camera to scan a setup code (below), that is the quickest way to set the app up (e.g. with Duo Mobile, Google Authenticator).', 'two-factor-authentication');
+			echo ' ';
+			_e('Otherwise, you can type the textual private key (shown below) into your app. Always keep private keys secret.', 'two-factor-authentication');
+			?>
+			
+			<?php printf(__('You are currently using %s, %s', 'two-factor-authentication'), strtoupper($algorithm_type), ($algorithm_type == 'totp') ? __('a time based algorithm', 'two-factor-authentication') : __('an event based algorithm', 'two-factor-authentication')); ?>.
+			</p>
+			
+			<?php $qr_url = $this->tfa_qr_code_url($algorithm_type, $url, $tfa_priv_key, $user_id); ?>
+			<div style="float: left; padding-right: 20px;" class="simbaotp_qr_container" data-qrcode="<?php echo esc_attr($qr_url); ?>"></div>
+			
+			<p>
+			<?php
+			$this->print_private_keys('full', $user_id);
+			if ($current_user->ID == $user_id) {
+				echo $this->reset_link($admin);
+			} else {
+				echo '<a id="tfa-reset-privkey-for-user" data-user_id="'.$user_id.'" href="#">'.__('Reset private key', 'two-factor-authentication').'</a>';
+			}
+			?>
+			</p>
+			
+			<?php
+			if ($admin || false !== apply_filters('simba_tfa_emergency_codes_user_settings', false, $user_id)) {
+				?>
+				
+				<div style="min-height: 100px;">
+				<h3 class="normal" style="cursor: default"><?php _e('Emergency codes', 'two-factor-authentication'); ?></h3>
+				<?php
+				$default_text = '<a href="https://www.simbahosting.co.uk/s3/product/two-factor-authentication/">'.__('One-time emergency codes are a feature of the Premium version of this plugin.', 'two-factor-authentication').'</a>';
+				echo apply_filters('simba_tfa_emergency_codes_user_settings', $default_text, $user_id);
+				?>
+				</div>
+				
+			<?php } ?>
+			</div>
+		
+		</div>
+		<?php
+	}
+	
+	/**
+	 * Print out HTML showing the specified user's private key
+	 *
+	 * @param String $type
+	 * @param Boolean|Integer $user_id
+	 */
+	public function print_private_keys($type = 'full', $user_id = false) {
+		
+		global $current_user;
+		if ($user_id == false) $user_id = $current_user->ID;
+		
+		$tfa_priv_key_64 = get_user_meta($user_id, 'tfa_priv_key_64', true);
+		if (!$tfa_priv_key_64) $tfa_priv_key_64 = $this->addPrivateKey($user_id);
+		
+		$tfa_priv_key = trim($this->getPrivateKeyPlain($tfa_priv_key_64, $user_id), "\x00..\x1F");
+		
+		$tfa_priv_key_32 = Base32::encode($tfa_priv_key);
+		
+		if ('full' == $type) {
+			?>
+			<strong><?php echo __('Private key (base 32 - used by Google Authenticator and Authy):', 'two-factor-authentication');?></strong>
+			<?php echo htmlspecialchars($tfa_priv_key_32); ?><br>
+			
+			<strong><?php echo __('Private key:', 'two-factor-authentication');?></strong>
+			<?php echo htmlspecialchars($tfa_priv_key); ?><br>
+			<?php
+		} elseif ('plain' == $type) {
+			echo htmlspecialchars($tfa_priv_key);
+		} elseif ('base32' == $type) {
+			echo htmlspecialchars($tfa_priv_key_32);
+		} elseif ('base64' == $type) {
+			echo htmlspecialchars($tfa_priv_key_64);
+		}
+	}
+	
+	/**
+	 * Return the URL for a QR code image
+	 *
+	 * @param String $algorithm_type - 'totp' or 'hotp'
+	 * @param String $url
+	 * @param String $tfa_priv_key
+	 * @param Boolean|Integer $user_id
+	 *
+	 * @return String
+	 */
+	public function tfa_qr_code_url($algorithm_type, $url, $tfa_priv_key, $user_id = false) {
+		global $current_user;
+		
+		$user = (false == $user_id) ? $current_user : get_user_by('id', $user_id);
+		
+		$encode = 'otpauth://'.$algorithm_type.'/'.$url.':'.rawurlencode($user->user_login).'?secret='.Base32::encode($tfa_priv_key).'&issuer='.$url.'&counter='.$this->getUserCounter($user->ID);
+		
+		return $encode;
+	}
+	
+	/**
+	 * See if HOTP is off sync, and if show, print out a message
+	 */
+	public function tfa_show_hotp_off_sync_message() {
+		
+		global $current_user;
+		$is_off_sync = get_user_meta($current_user->ID, 'tfa_hotp_off_sync', true);
+		if (!$is_off_sync) return;
+		
+		?>
+		<div class="error">
+			<h3><?php _e('Two Factor Authentication re-sync needed', 'two-factor-authentication');?></h3>
+			<p>
+				<?php _e('You need to resync your device for Two Factor Authentication since the OTP you last used is many steps ahead of the server.', 'two-factor-authentication'); ?>
+				<br>
+				<?php _e('Please re-sync or you might not be able to log in if you generate more OTPs without logging in.', 'two-factor-authentication');?>
+				<br><br>
+				<a href="<?php echo wp_nonce_url('admin.php?page=two-factor-auth-user&warning_button_clicked=1', 'tfaresync', 'resyncnonce'); ?>" class="button"><?php _e('Click here and re-scan the QR-Code', 'two-factor-authentication');?></a>
+			</p>
+		</div>
+		
+		<?php
 		
 	}
 	
@@ -81,8 +602,7 @@ class Simba_TFA_Provider_TOTP {
 	public function print_default_hmac_radios() {
 		
 		$setting = $this->tfa->get_option('tfa_default_hmac');
-		
-		$setting = $setting === false || !$setting ? $this->default_hmac : $setting;
+		if (!$setting) $setting = $this->default_hmac;
 		
 		$types = array('totp' => __('TOTP (time based - most common algorithm; used by Google Authenticator)', 'two-factor-authentication'), 'hotp' => __('HOTP (event based)', 'two-factor-authentication'));
 		
@@ -170,7 +690,9 @@ class Simba_TFA_Provider_TOTP {
 		return $code;
 	}
 	
-	// Port over keys that were encrypted with mcrypt and its non-compliant padding scheme, so that if the site is ever migrated to a server without mcrypt, they can still be decrypted
+	/**
+	 * Port over keys that were encrypted with mcrypt and its non-compliant padding scheme, so that if the site is ever migrated to a server without mcrypt, they can still be decrypted
+	 */
 	public function potentially_port_private_keys() {
 		
 		$simba_tfa_priv_key_format = get_site_option('simba_tfa_priv_key_format', false);
@@ -230,26 +752,28 @@ class Simba_TFA_Provider_TOTP {
 	}
 	
 	/**
-	 * @param Array $codes - current list of codes (encrypted)
-	 * @param Integer $user_ID - WP user ID
+	 * @param Integer $user_id - WP user ID
 	 * @param Boolean $generate_if_empty - generate some new codes if the list is empty
 	 *
 	 * @return String - human-usable codes, separated by ', ' (or a human-readable message, if there were none)
 	 */
-	public function getPanicCodesString($codes, $user_ID, $generate_if_empty = false) {
-		if (!is_array($codes)) return '<em>'.__('No emergency codes left. Sorry.', 'two-factor-authentication').'</em>';
+	public function get_emergency_codes_as_string($user_id, $generate_if_empty = false) {
+		
+		$codes = get_user_meta($user_id, 'simba_tfa_emergency_codes_64', true);
+		if (!is_array($codes)) $codes = array();
+
 		if ($generate_if_empty && empty($codes)) {
-			$tfa_priv_key = get_user_meta($user_ID, 'tfa_priv_key_64', true);
-			$algorithm = get_user_meta($user_ID, 'tfa_algorithm_type', true);
-			do_action('simba_tfa_emergency_codes_empty', $algorithm, $user_ID, $tfa_priv_key, $this);
-			$codes = get_user_meta($user_ID, 'simba_tfa_emergency_codes_64', true);
+			$tfa_priv_key = get_user_meta($user_id, 'tfa_priv_key_64', true);
+			$algorithm = get_user_meta($user_id, 'tfa_algorithm_type', true);
+			do_action('simba_tfa_emergency_codes_empty', $algorithm, $user_id, $tfa_priv_key, $this);
+			$codes = get_user_meta($user_id, 'simba_tfa_emergency_codes_64', true);
 			if (!is_array($codes)) $codes = array();
 		}
 		
 		$emergency_str = '';
 		
 		foreach ($codes as $p_code) {
-			$emergency_str .= $this->decryptString($p_code, $user_ID).', ';
+			$emergency_str .= $this->decryptString($p_code, $user_id).', ';
 		}
 		
 		$emergency_str = rtrim($emergency_str, ', ');
@@ -371,13 +895,13 @@ class Simba_TFA_Provider_TOTP {
 	 * @return String - 'hotp' or 'totp'
 	 */
 	public function get_user_otp_algorithm($user_id) {
-		global $simba_two_factor_authentication;
+
 		$setting = get_user_meta($user_id, 'tfa_algorithm_type', true);
-		$default_hmac = $simba_two_factor_authentication->get_option('tfa_default_hmac');
-		$default_hmac = $default_hmac ? $default_hmac : $this->default_hmac;
 		
-		$setting = $setting === false || !$setting ? $default_hmac : $setting;
-		return $setting;
+		$default_hmac = $this->tfa->get_option('tfa_default_hmac');
+		if (!$default_hmac) $default_hmac = $this->default_hmac;
+		
+		return $setting ? $setting : $default_hmac;
 	}
 	
 	private function get_iv_size() {
@@ -484,7 +1008,6 @@ class Simba_TFA_Provider_TOTP {
 		foreach ($users as $user) {
 			$tfa_algorithm_type = get_user_meta($user->ID, 'tfa_algorithm_type', true);
 			if ($tfa_algorithm_type) continue;
-			
 			update_user_meta($user->ID, 'tfa_algorithm_type', $this->get_user_otp_algorithm($user->ID));
 		}
 	}

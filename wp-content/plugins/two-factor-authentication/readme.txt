@@ -2,7 +2,7 @@
 Tags: two factor, 2fa, tfa, two factor auth, google authenticator
 Requires at least: 3.4
 Tested up to: 5.8
-Stable tag: 1.12.2
+Stable tag: 1.13.0
 Requires PHP: 5.6
 Author: DavidAnderson
 Contributors: DavidAnderson, DNutbourne
@@ -155,6 +155,22 @@ Note that the two factor authentication plugin has no mechanism to compare or ap
 13. Allowing users to have trusted devices (Premium version)
 
 == Changelog ==
+
+= 1.13.0 - 01/Nov/2021 =
+
+* REFACTOR: Complete re-organisation of all Premium code. If you had hand-coded any code which interacted with it, you will want to review and test your customisations carefully first. This applies for all refactoring items and internal changes mentioned below.
+* REFACTOR: Abolished the class Simba_TFA_Plugin_Admin_Dashboard_Integration
+* REFACTOR: Moved some TOTP/HOTP-specific methods out of Simba_Two_Factor_Authentication into Simba_TFA_Provider_TOTP
+* TWEAK: Class TFA_Frontend renamed to Simba_TFA_Frontend
+* TWEAK: The constant SIMBA_TFA_PLUGIN_FILE is no longer used internally and has been abolished
+* TWEAK: Move Premium plugin update loader into the main Premium class
+* TWEAK: Factor out all Premium features into individual classes
+* TWEAK: The method tfa_is_available_and_active() has been removed.
+* TWEAK: The method Simba_TFA_Provider_TOTP::getPanicCodesString() has been renamed to Simba_TFA_Provider_TOTP::get_emergency_codes_as_string()
+
+= 1.12.3 - 22/Oct/2021 =
+
+* FIX: Fix the twofactor_user_qrcode shortcode in the Premium version
 
 = 1.12.2 - 21/Oct/2021 =
 
@@ -713,4 +729,4 @@ Note that the two factor authentication plugin has no mechanism to compare or ap
 * User interface simplified/de-cluttered
 
 == Upgrade Notice ==
-* 1.12.2 : Major re-factor. If you had hand-written custom PHP code that hooks into any internal classes, you will want to review your customisations carefully first. 1.12.2 fixes a regression in 1.12.0 for sites without AUTH_KEY defined in wp-config.php
+* 1.13.0 : Major re-factoring continues. If you had hand-written custom PHP code that hooks into any internal classes, you will want to review your customisations carefully first; see the changelog entries for some particularly notable changes.

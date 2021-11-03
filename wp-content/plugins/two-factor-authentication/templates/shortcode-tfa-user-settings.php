@@ -14,9 +14,9 @@ if (!$is_activated_for_user) {
 		
 		<?php $tfa_frontend->settings_enable_or_disable_output(); ?>
 		
-		<?php $simba_tfa->current_codes_box(false); ?>
+		<?php $simba_tfa->get_totp_controller()->current_codes_box(); ?>
 		
-		<?php $simba_tfa->advanced_settings_box(array($tfa_frontend, 'save_settings_button')); ?>
+		<?php $simba_tfa->get_totp_controller()->advanced_settings_box(array($tfa_frontend, 'save_settings_button')); ?>
 	
 	</div>
 	

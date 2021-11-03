@@ -53,7 +53,13 @@ class Simba_TFA_Login_Form_Integrations {
 	
 	}
 	
-	// Catch TML login widgets (other TML login forms already trigger)
+	/**
+	 * Catch TML login widgets (other TML login forms already trigger)
+	 *
+	 * @param Mixed $whatever
+	 *
+	 * @return Mixed
+	 */
 	public function tml_display($whatever) {
 		$this->tfa->login_enqueue_scripts();
 		return $whatever;
@@ -95,7 +101,7 @@ class Simba_TFA_Login_Form_Integrations {
 			'caller'=> $_SERVER['PHP_SELF'] ? $_SERVER['PHP_SELF'] : $_SERVER['REQUEST_URI'],
 			'two_factor_code' => stripslashes((string) $_POST['two_factor_code'])
 		);
-		$code_ok = $GLOBALS['simba_two_factor_authentication']->authorise_user_from_login($params, true);
+		$code_ok = $this->tfa->authorise_user_from_login($params, true);
 		
 		$code_ok = apply_filters('simbatfa_affwp_process_login_form_auth_result', $code_ok, $params);
 		

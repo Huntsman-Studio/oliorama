@@ -6,7 +6,7 @@ if (!defined('ABSPATH')) die('Access denied.');
 
 	<div>
 
-	<h1><?php echo sprintf(__('Two Factor Authentication (Version: %s) - Admin Settings', 'two-factor-authentication'), $simba_two_factor_authentication->version); ?> </h1>
+	<h1><?php echo sprintf(__('Two Factor Authentication (Version: %s) - Admin Settings', 'two-factor-authentication'), $simba_tfa->version); ?> </h1>
 
 	<?php
 		if (!class_exists('Simba_Two_Factor_Authentication_Premium')) {
@@ -57,7 +57,7 @@ if (!defined('ABSPATH')) die('Access denied.');
 		<h2><?php _e('User roles', 'two-factor-authentication'); ?></h2>
 		<?php _e('Choose which user roles will have two factor authentication available.', 'two-factor-authentication'); ?>
 		<p>
-			<?php $simba_two_factor_authentication->list_user_roles_checkboxes(); ?>
+			<?php $simba_tfa->list_user_roles_checkboxes(); ?>
 		</p>
 		<?php submit_button(); ?>
 	</form>
@@ -108,7 +108,7 @@ if (!defined('ABSPATH')) die('Access denied.');
 			
 			?>
 			<p>
-			<?php $simba_two_factor_authentication->tfa_list_xmlrpc_status_radios(); ?>
+			<?php $simba_tfa->tfa_list_xmlrpc_status_radios(); ?>
 			</p>
 			<?php submit_button(); ?>
 		</form>
@@ -117,9 +117,7 @@ if (!defined('ABSPATH')) die('Access denied.');
 	<div id="simba-tfa-admin-settings-algorithm">
 		<hr>
 		<form method="post" action="options.php" style="margin-top: 40px">
-		<?php
-			settings_fields('simba_tfa_default_hmac_group');
-		?>
+			<?php settings_fields('simba_tfa_default_hmac_group'); ?>
 			<h2><?php _e('Default algorithm', 'two-factor-authentication'); ?></h2>
 			<?php _e('Your users can change this in their own settings if they want.', 'two-factor-authentication'); ?>
 			<p>
@@ -172,6 +170,9 @@ if (!defined('ABSPATH')) die('Access denied.');
 			<li><strong><?php _e('Trusted devices', 'two-factor-authentication');?></strong> - <?php _e('allow privileged (or all) users to mark a device as trusted and thereby only needing to supply a TFA code upon login every so-many days (e.g. every 30 days) instead of on each login.', 'two-factor-authentication');?></li>
 			<li><strong><?php _e('Manage all users centrally', 'two-factor-authentication');?></strong> - <?php _e('enable, disable or see TFA codes for all your users from one central location.', 'two-factor-authentication');?></li>
 			<li><strong><?php _e('More shortcodes', 'two-factor-authentication');?></strong> - <?php _e('flexible shortcodes allowing you to design your front-end settings page for your users exactly as you wish.', 'two-factor-authentication');?></li>
+			<li><strong><?php _e('More WooCommerce features', 'two-factor-authentication');?></strong> - <?php _e('automatically add TFA settings in the WooCommerce account settings, and WooCommerce login form bot protection.', 'two-factor-authentication');?></li>
+			<li><strong><?php _e('Elementor support', 'two-factor-authentication');?></strong> - <?php _e('adds support for Elementor login forms.', 'two-factor-authentication');?></li>
+			<li><strong><?php _e('Any-form support', 'two-factor-authentication');?></strong> - <?php _e('adds support for any login form from any plugin via appending your TFA code onto the end of your password.', 'two-factor-authentication');?></li>
 			<li><strong><?php _e('Personal support', 'two-factor-authentication');?></strong> - <?php _e('access to our personal support desk for 12 months.', 'two-factor-authentication');?></li>
 		</ul>
 	</p>

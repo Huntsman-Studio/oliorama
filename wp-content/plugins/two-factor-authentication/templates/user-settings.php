@@ -2,7 +2,8 @@
 
 if (!defined('ABSPATH')) die('Access denied.');
 
-global $current_user, $simba_two_factor_authentication;
+global $current_user;
+$totp_controller = $simba_tfa->get_totp_controller();
 
 ?>
 <style>
@@ -20,11 +21,11 @@ global $current_user, $simba_two_factor_authentication;
 
 	<?php
 
-		if (!empty($tfa_settings_saved)) {
+		if (!empty($totp_controller->were_settings_saved())) {
 			echo '<div class="updated notice is-dismissible">'."<p><strong>".__('Settings saved.', 'two-factor-authentication')."</strong></p></div>";
 		}
 
-		$simba_two_factor_authentication->include_template('settings-intro-notices.php');
+		$simba_tfa->include_template('settings-intro-notices.php');
 
 	?>
 	
@@ -42,15 +43,16 @@ global $current_user, $simba_two_factor_authentication;
 		</p>
 		<p>
 		<?php
-		$simba_two_factor_authentication->paint_enable_tfa_radios($current_user->ID);
+		$simba_tfa->paint_enable_tfa_radios($current_user->ID);
 		?></p>
 		<?php submit_button(); ?>
 	</form>
+
 	<?php
 	
-		$simba_two_factor_authentication->current_codes_box();
+		$totp_controller->current_codes_box();
 
-		$simba_two_factor_authentication->advanced_settings_box();
+		$totp_controller->advanced_settings_box();
 
 		do_action('simba_tfa_user_settings_after_advanced_settings');
 		
