@@ -2,10 +2,8 @@
 
 // Set image data
 include 'inc/functions/set-image-data.php';		
-// Fonts registration
-// include 'inc/register_fonts.php';
-// WooCommerce Support
-// include 'inc/woo_support.php';
+// Disable guttenberg
+include 'inc/functions/guttenberg.php';
 
 if ( ! defined( 'OLIORAMA_DIR_PATH' ) ) {
 	define( 'OLIORAMA_DIR_PATH', untrailingslashit( get_template_directory() ) );
