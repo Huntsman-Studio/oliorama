@@ -7,6 +7,8 @@
     <?php the_content()?>
 
 <?php endwhile; else : endif; ?>
+
+<?php if(is_page('Shop'))  get_template_part( 'templates/pages/test_page' ); ?>
     
 <!-- Footer -->
 <?php get_footer(); ?>
