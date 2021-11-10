@@ -1,9 +1,7 @@
 <?php
 
 // Set image data
-include 'inc/functions/set-image-data.php';		
-// Disable guttenberg
-include 'inc/functions/guttenberg.php';
+include 'inc/set-image-data.php';		
 // Theme support
 include 'inc/theme_support.php';
 
