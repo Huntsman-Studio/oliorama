@@ -33,4 +33,7 @@
 
         } 
     }
+
+    // Add image sizes
+    add_image_size('post_image', 1200, 600, true);
 ?>

@@ -4,6 +4,8 @@
 include 'inc/functions/set-image-data.php';		
 // Disable guttenberg
 include 'inc/functions/guttenberg.php';
+// Theme support
+include 'inc/theme_support.php';
 
 if ( ! defined( 'OLIORAMA_DIR_PATH' ) ) {
 	define( 'OLIORAMA_DIR_PATH', untrailingslashit( get_template_directory() ) );
