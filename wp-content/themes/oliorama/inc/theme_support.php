@@ -5,7 +5,14 @@
 
     add_theme_support('menus');             # Menus
     add_theme_support('post-thumbnails');   # Thumbnails on posts
-    add_theme_support('woocommerce');       # Woo
+
+    // Woo Support
+    function mytheme_add_woocommerce_support() {
+        add_theme_support( 'woocommerce' );
+    }
+
+    add_action( 'after_setup_theme', 'mytheme_add_woocommerce_support' );
+    // Woo Support
 
     // Add widget 
     register_sidebar(
