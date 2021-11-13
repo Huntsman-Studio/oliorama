@@ -44,6 +44,7 @@ module.exports = {
         'mint': '#1cce9f'
       },
 
+      // border color
       borderColor: theme => ({
         ...theme('colors'),
         'davys-gray': '#0C0C0C',
@@ -59,7 +60,7 @@ module.exports = {
         'gold': '#ffd21d',
         'candy': '#f71c31',
         'mint': '#1cce9f'
-      })
+      }),
     },
   },
   variants: {
