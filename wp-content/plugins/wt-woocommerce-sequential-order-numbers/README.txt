@@ -3,8 +3,8 @@ Contributors: webtoffee
 Donate link: https://www.webtoffee.com/plugins/
 Tags: sequential order number, custom order number, order number, sequential order, woocommerce, sequential, woocommerce sequential order number, advanced order number, woocommerce custom order number, change order number, woocommerce change order number, woocommerce order numbers
 Requires at least: 3.0.1
-Tested up to: 5.8
-Stable tag: 1.4.0
+Tested up to: 5.9
+Stable tag: 1.4.1
 Requires PHP: 5.6
 License: GPLv3
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
@@ -19,7 +19,7 @@ WordPress uses an ID system for posts, pages, and media files. WooCommerce uses 
 
 When you activate the sequential order number plugin, if you have no orders in your store, your orders will start counting from order number 1 or the custom starting number specified. If you have existing orders, the order number will pick up from your highest order number.
 
-== Features of the Sequential Order Number for WooCommerce Plugin ==
+== Free Version Features of the Sequential Order Number for WooCommerce Plugin ==
 
 * Supports **sequential order numbers** for WooCommerce
 * Set **custom starting number** for orders
@@ -34,12 +34,28 @@ When you activate the sequential order number plugin, if you have no orders in y
 * Enable **order tracking** to easily find order details
 * Supports WooCommerce custom order numbers
 * Tested OK with PHP 8
-* Tested OK with WooCommerce 5.8
+* Tested OK with WooCommerce 5.9
 
 
 >**Note:** If you like to make any of your other plugins (invoice/payment/shipment) compatible with the Sequential Order Numbers for WooCommerce, please make the below tweak.
 
 >Instead of referencing $order->id or $order->get_id() when fetching order data, use $order->get_order_number()
+
+
+== Installation and Setup of the Sequential Order Number Plugin ==
+
+To learn about the installation and setup of this free sequential order plugin, visit the <a rel="nofollow" href="https://www.webtoffee.com/sequential-order-number-woocommerce-plugin-user-guide/"> WooCommerce sequential order number plugin</a> documentation. 
+
+==Premium Version Features==
+ 
+ &#9989;  Add custom suffix
+ &#9989;  Add order date as suffix
+ &#9989;  Option to auto-reset order numbers on a daily/monthly/yearly basis
+ &#9989;  Custom sequence for free orders
+ &#9989;  More order number templates
+ &#9989;  Custom increment for order sequence
+
+For more information about the plugin checkout the [Sequential Order Number for WooCommerce Premium](https://www.webtoffee.com/product/woocommerce-sequential-order-numbers/).
 
 == Compatible Plugins ==
 * <a href="https://www.pluginhive.com/product/woocommerce-shipment-tracking-pro/"> WooCommerce Shipment Tracking Pro by PluginHive</a>
@@ -48,14 +64,13 @@ When you activate the sequential order number plugin, if you have no orders in y
 By Inpsyde GmbH](https://wordpress.org/plugins/woo-paypalplus/)
 * [PayPal for WooCommerce By AngellEye](https://www.angelleye.com/product/woocommerce-paypal-plugin/)
 * [WooCommerce PDF Invoices, Packing Slips, Delivery Notes and Shipping Labels By WebToffee](https://www.webtoffee.com/product/woocommerce-pdf-invoices-packing-slips/)
+* [PayPal Express Checkout Plugin for WooCommerce By WebToffee](https://www.webtoffee.com/product/paypal-express-checkout-gateway-for-woocommerce/)
 * [WooCommerce Subscriptions](https://woocommerce.com/products/woocommerce-subscriptions/)
 * [Point of Sale POS for WooCommerce](https://wordpress.org/plugins/point-of-sale-pos-woocommerce/)
 * [WooCommerce POS](https://wordpress.org/plugins/woocommerce-pos/)
 * [WPML](https://wpml.org/)
 
-== Installation and Setup of the Sequential Order Number Plugin ==
 
-To learn about the installation and setup of this free sequential order plugin, visit the <a rel="nofollow" href="https://www.webtoffee.com/sequential-order-number-woocommerce-plugin-user-guide/"> WooCommerce sequential order number plugin</a> documentation. 
 
 == Importance of Sequential Order Numbers for WooCommerce ==
 
@@ -121,6 +136,11 @@ Yes. It's possible to add order date prefix.
 
 
 == Changelog ==
+
+= 1.4.1 =
+* [Enhancement] - Pro version banner.
+* [Enhancement] - Minor code refactoring.
+* [Compatibility] - WooCommerce 5.9
 
 = 1.4.0 =
 * [Enhancement] - Minor code refactoring.
@@ -292,7 +312,7 @@ Yes. It's possible to add order date prefix.
 
 == Upgrade Notice ==
 
-= 1.4.0 =
+= 1.4.1 =
+* [Enhancement] - Pro version banner.
 * [Enhancement] - Minor code refactoring.
-* [Compatibility] - WordPress 5.8.1
-* [Compatibility] - WooCommerce 5.8
+* [Compatibility] - WooCommerce 5.9

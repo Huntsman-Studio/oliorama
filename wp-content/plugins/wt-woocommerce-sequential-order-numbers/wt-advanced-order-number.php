@@ -15,13 +15,13 @@
  * Plugin Name:       Sequential Order Numbers for WooCommerce
  * Plugin URI:        https://wordpress.org/plugins/wt-woocommerce-sequential-order-numbers/
  * Description:       Automatically sets sequential order number for WooCommerce orders placed by either customers or by admin through backend.
- * Version:           1.4.0
+ * Version:           1.4.1
  * Author:            WebToffee
  * Author URI:        https://www.webtoffee.com/
  * License:           GPLv3
  * License URI:       https://www.gnu.org/licenses/gpl-3.0.html
  * WC requires at least: 2.1.0
- * WC tested up to:   5.8
+ * WC tested up to:   5.9
  * Text Domain:       wt-woocommerce-sequential-order-numbers
  * Domain Path:       /languages
  */
@@ -60,7 +60,7 @@ if(!$wt_seq_order_no_plugin_conflict)
  * Start at version 1.0.0 and use SemVer - https://semver.org
  * Rename this for your plugin and update it as you release new versions.
  */
-define( 'WT_SEQUENCIAL_ORDNUMBER_VERSION', '1.4.0' );
+define( 'WT_SEQUENCIAL_ORDNUMBER_VERSION', '1.4.1' );
 
 if (!defined('WT_SEQUENCIAL_ORDNUMBER_BASE_NAME')) {
     define('WT_SEQUENCIAL_ORDNUMBER_BASE_NAME', plugin_basename(__FILE__));

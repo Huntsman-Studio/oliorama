@@ -48,6 +48,7 @@ class Wt_Advanced_Order_Number_Admin {
             '<a href="' . admin_url('admin.php?page=wc-settings&tab=wts_settings') . '">' . __('Settings', 'wt-woocommerce-sequential-order-numbers') . '</a>',
             '<a target="_blank" href="https://wordpress.org/support/plugin/wt-woocommerce-sequential-order-numbers/">' . __('Support', 'wt-woocommerce-sequential-order-numbers') . '</a>',
             '<a target="_blank" href="https://wordpress.org/support/plugin/wt-woocommerce-sequential-order-numbers/reviews/?rate=5#new-post">' . __('Review', 'wt-woocommerce-sequential-order-numbers') . '</a>',
+            '<a href=" https://www.webtoffee.com/product/woocommerce-sequential-order-numbers/?utm_source=free_plugin_listing&utm_medium=sequential_free&utm_campaign=Sequential_Order_Numbers&utm_content='.WT_SEQUENCIAL_ORDNUMBER_VERSION.'" target="_blank" style="color: #3db634;">'.__('Premium Upgrade','wt-woocommerce-sequential-order-numbers').'</a>',
         );
         if (array_key_exists('deactivate', $links)) {
             $links['deactivate'] = str_replace('<a', '<a class="wtsequentialordnum-deactivate-link"', $links['deactivate']);

@@ -14,7 +14,7 @@ class Wt_Advanced_Order_Number {
         if (defined('WT_SEQUENCIAL_ORDNUMBER_VERSION')) {
             $this->version = WT_SEQUENCIAL_ORDNUMBER_VERSION;
         } else {
-            $this->version = '1.4.0';
+            $this->version = '1.4.1';
         }
         $this->plugin_name = 'wt-advanced-order-number';
         $this->plugin_base_name = WT_SEQUENCIAL_ORDNUMBER_BASE_NAME;
@@ -345,8 +345,9 @@ class Wt_Advanced_Order_Number {
 
         global $wpdb;
 
-        if ( is_array( $post ) || is_null( $post ) || ( $post->post_type === 'shop_order' && $post->post_status == 'auto-draft' ) ) {
-            $order = wc_get_order( $post_id );
+        if ( is_array( $post ) || is_null( $post ) || ( $post->post_type === 'shop_order' && $post->post_status !== 'auto-draft' ) ) {
+
+            $order = $post_id instanceof \WC_Order ? $post_id : wc_get_order( $post_id );
             $order_id = (WC()->version < '2.7.0') ? $order->id : $order->get_id();
             $order_number = get_post_meta($order_id, '_order_number', TRUE);
             if (empty($order_number)) {

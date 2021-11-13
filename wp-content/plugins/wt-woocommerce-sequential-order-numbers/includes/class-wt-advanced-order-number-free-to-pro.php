@@ -40,22 +40,15 @@ if (!class_exists('WT_Sequentialordnum_free_to_pro')) :
             if(isset($_GET['page']) && $_GET['page']=='wc-settings' && isset($_GET['tab']) && $_GET['tab']=='wts_settings')
             {
                 $seq_order_logo_url=WT_SEQUENCIAL_ORDNUMBER_URL.'assets/images/logo.png';
+                $tick=WT_SEQUENCIAL_ORDNUMBER_URL.'assets/images/tick.svg';
+                $crown=WT_SEQUENCIAL_ORDNUMBER_URL.'assets/images/blue-crown.svg';
+                $white_crown=WT_SEQUENCIAL_ORDNUMBER_URL.'assets/images/white-crown.svg';
+                $money_back=WT_SEQUENCIAL_ORDNUMBER_URL.'assets/images/money-back.svg';
+                $support=WT_SEQUENCIAL_ORDNUMBER_URL.'assets/images/support.svg';
                 $reasons = $this->get_suggested_feature();
                 ?>
                 <style>
-                    .wt_gopro_block{ 
-                        background: #fff; 
-                        height:auto; 
-                        padding-left:20px;
-                        padding-right:20px; 
-                        padding-bottom:10px; 
-                        box-sizing:border-box; 
-                        box-shadow: 0px 2px 2px #ccc; 
-                        margin-top: 20px; 
-                        border-top:solid 1px #cccccc; 
-                        float: right;
-                        }
-                    .wt_gopro_block h3{ text-align: center; }
+                    
                     .wt_button{
                         font-family: Arial;
                         font-style: normal;
@@ -63,62 +56,20 @@ if (!class_exists('WT_Sequentialordnum_free_to_pro')) :
                         font-size: 12px;
                         line-height: 15px;
                         text-align: center;
-                        background: #5237AC;
+                        background: linear-gradient(90.67deg, #2608DF -34.86%, #3284FF 115.74%);
                         text-align: center;
                         border-radius: 4px; 
-                        box-shadow: 0px 4px 16px rgba(99, 66, 183, 0.35);
+                        box-shadow: 0px 4px 13px rgba(46, 80, 242, 0.39);
                         padding: 4px 10px 4px 10px;
+                        text-decoration: none;
+                        transition: all .2s ease;
+                        border: none;
                     }
-                    .wt_go_pro_title{
-                        font-family: Arial;
-                        font-style: normal;
-                        font-weight: normal;
-                        font-size: 28px;
-                        letter-spacing: 0.015em;
-                        color: #000000;
-                    }
-                    .wt_seq_title{
-                        background: #F6F4FA;
-                        border-radius: 9px; 
-                        padding: 10px 10px 10px 8px;
-                        margin-bottom: 16px;
-                    }
-                    .wt_seq_title_val{
-                        font-family: Arial;
-                        font-style: normal;
-                        font-weight: normal;
-                        font-size: 16px;
-                        line-height: 20px;
-                        color: #5237AC;
-                        width: 100%;
-                        padding-left: 4px;
-                    }
-                    .wt_seq_pro_features li{
-                        font-family: Arial;
-                        font-style: normal;
-                        font-weight: 300;
-                        font-size: 13px;
-                        line-height: 19.58px;
-                    }
-                    .wt_premium_features li::before {
-                        font-family: dashicons;
-                        text-decoration: inherit;
-                        font-weight: 300;
-                        font-style: normal;
-                        vertical-align: top;
-                        text-align: center;
-                        content: "\2B50";
-                        padding-right: 8px;
-                        padding-left: 6px;
-                        font-size: 9px;
-                        color: #FF9212;
-                    }
-                    .wt_seq_pro_features{
-                        width: 100%;
-                        border: 2px solid #F6F4FA;
-                        box-sizing: border-box;
-                        border-radius: 9px;
-                        margin-bottom: 8px;
+                    .wt_button:hover{
+                        box-shadow: 0px 4px 13px rgba(46, 80, 242, 0.5);
+                        text-decoration: none;
+                        transform: translateY(2px);
+                        transition: all .2s ease;
                     }
                     .wt_suggest_button{
                         text-align: center;
@@ -128,49 +79,234 @@ if (!class_exists('WT_Sequentialordnum_free_to_pro')) :
                     .wt_seq_settings_left
                     { 
                         float:left; 
-                        width:70%; 
+                        width:65%; 
                     }
                     .wt_seq_settings_right{ 
-                        float:right; 
+                        float:left; 
                         width:30%; 
+                        padding-left: 25px;
                     }
                     p.submit{ 
                         float:left; 
                         width:100%; 
                     }
-                </style>
-                <div class="wt_gopro_block" id="wtsequentialordnum-wtsequentialordnum-modal">
-                    <h3 class="wt_go_pro_title"><?php echo __('Coming soon!','wt-woocommerce-sequential-order-numbers'); ?></h3>
+                
+                    .wt-seq-sidebar{
+                        background: #FFFFFF;
+                        border-radius: 7px;
+                        padding: 0;
+                    }
+                    .wt-seq-header{
+                        background: #FFFFFF;
+                        box-shadow: 0px 4px 19px rgba(49, 117, 252, 0.2);
+                        border-radius: 7px;
+                        padding: 8px;
+                        margin: 0;
+                    }
+                    .wt-seq-name{
+                        background: linear-gradient(87.57deg, #F4F1FF 3%, rgba(238, 240, 255, 0) 93.18%);
+                        border-radius: 3px;
+                        margin: 0;
+                        padding: 16px;
+                        display: flex;
+                        align-items: center;
+                    }
+                    .wt-seq-name img{
+                        width: 36px;
+                        height: auto;
+                        box-shadow: 4px 4px 4px rgba(92, 98, 215, 0.23);
+                        border-radius: 7px;
+                    }
+                    .wt-seq-name span{
+                        font-style: normal;
+                        font-weight: 600;
+                        line-height: 16px;
+                        margin: 0 0 0 12px;
+                        color: #5D63D9;
+                        font-size: 15px;
+                    }
+                    .wt-seq-mainfeatures ul{
+                        padding: 0;
+                        margin: 15px 25px 20px 25px;
+                    }
+                    .wt-seq-mainfeatures li{
+                        font-style: normal;
+                        font-weight: bold;
+                        font-size: 14px;
+                        line-height:24px;
+                        letter-spacing: -0.01em;
+                        list-style: none;
+                        position: relative;
+                        color: #091E80;
+                        padding-left: 28px;
+                        padding-left: 49px;
+                        margin: 0 0 15px 0;
+                        display: flex;
+                    }
+                    .wt-seq-mainfeat li.money-back:before{
+                        content: '';
+                        position: absolute;
+                        left: 10px;
+                        height:24px ;
+                        width: 16px;
+                        background-image: url(<?php echo esc_url($money_back); ?>);
+                        background-position: center;
+                        background-repeat: no-repeat;
+                        background-size: contain;
+                    }
 
-                    <div class="wt_seq_title" style="width: 100%; text-align:center;">
-                        <div style="float: left; padding-right: 6px;">
-                             <img src="<?php echo esc_url($seq_order_logo_url); ?>" style="max-width:100px;">
-                        </div>
-                        <div class="wt_seq_title_val">
-                            <?php echo __('Sequential Order Number for WooCommerce Pro','wt-woocommerce-sequential-order-numbers'); ?>
-                        </div>
-                    </div>
-                    <div class="wt_seq_pro_features">
-                        <ul class="wt_premium_features">
-                            <li><?php echo __('Add custom suffix for order numbers','wt-woocommerce-sequential-order-numbers'); ?></li>         
-                            <li><?php echo __('Date suffix in order numbers','wt-woocommerce-sequential-order-numbers'); ?></li>         
-                            <li><?php echo __('Auto reset sequence per month/year etc.','wt-woocommerce-sequential-order-numbers'); ?></li>         
-                            <li><?php echo __('Custom sequence for free orders','wt-woocommerce-sequential-order-numbers'); ?></li> 
-                             <li><?php echo __('More order number templates','wt-woocommerce-sequential-order-numbers'); ?></li>         
-                            <li><?php echo __('Increment sequence in custom series','wt-woocommerce-sequential-order-numbers'); ?><br/>
-                                <span style="padding-left: 22px;">
-                                    <?php echo __('and many more','wt-woocommerce-sequential-order-numbers'); ?>
-                                </span>
-                            </li>                 
+                    .wt-seq-mainfeat li.support:before{
+                        content: '';
+                        position: absolute;
+                        left: 10px;
+                        height:24px ;
+                        width: 16px;
+                        background-image: url(<?php echo esc_url($support); ?>);
+                        background-position: center;
+                        background-repeat: no-repeat;
+                        background-size: contain;
+                    }
+                    .wt-seq-btn-wrapper{
+                        display: block;
+                        margin: 20px auto 20px;
+                        text-align: center;
+                    }
+                    .wt-seq-blue-btn{
+                        background: linear-gradient(90.67deg, #2608DF -34.86%, #3284FF 115.74%);
+                        box-shadow: 0px 4px 13px rgba(46, 80, 242, 0.39);
+                        border-radius: 5px;
+                        padding: 10px 15px 10px 38px;
+                        display: inline-block;
+                        font-style: normal;
+                        font-weight: bold;
+                        font-size: 14px;
+                        line-height: 18px;
+                        color: #FFFFFF;
+                        text-decoration: none;
+                        transition: all .2s ease;
+                        position: relative;
+                        border: none;
+                    }
+                    .wt-seq-blue-btn:before{
+                        content: '';
+                        position: absolute;
+                        height: 15px;
+                        width: 18px;
+                        background-image: url(<?php echo esc_url($white_crown); ?>);
+                        background-size: contain;
+                        background-repeat: no-repeat;
+                        background-position: center;
+                        left: 15px;
+                    }
+                    .wt-seq-blue-btn:hover{
+                        box-shadow: 0px 4px 13px rgba(46, 80, 242, 0.5);
+                        text-decoration: none;
+                        transform: translateY(2px);
+                        transition: all .2s ease;
+                    }
+                    .wt-seq-features{
+                        padding: 40px 30px 25px 30px;
+                    }
+                    .wt-seq-features ul{
+                        padding: 0;
+                        margin: 0;
+                    }
+                    .wt-seq-features li{
+                        font-style: normal;
+                        font-weight: 500;
+                        font-size: 13px;
+                        line-height: 17px;
+                        color: #001A69;
+                        list-style: none;
+                        position: relative;
+                        padding-left: 49px;
+                        margin: 0 0 15px 0;
+                        display: flex;
+                        align-items: center;
+                    }
+                    .wt-seq-allfeat li:before{
+                        content: '';
+                        position: absolute;
+                        height: 18px;
+                        width: 18px;
+                        background-image: url(<?php echo esc_url($tick); ?>);
+                        background-size: contain;
+                        background-repeat: no-repeat;
+                        background-position: center;
+                        left: 10px;
+                    }
+                    ul.wt-seq-newfeat li {
+                        margin-bottom: 30px;
+                    }
+                    .wt-seq-outline-btn{
+                        border: 1px solid #007FFF;
+                        background: #fff;
+                        border-radius: 5px;
+                        padding: 10px 15px 10px 38px;
+                        display: inline-block;
+                        font-style: normal;
+                        font-weight: bold;
+                        font-size: 14px;
+                        line-height: 18px;
+                        color: #007FFF;
+                        text-decoration: none;
+                        transition: all .2s ease;
+                        position: relative;
+                        background: transparent;
+                    }
+                    .wt-seq-outline-btn:before{
+                        content: '';
+                        position: absolute;
+                        height: 15px;
+                        width: 18px;
+                        background-image: url(<?php echo esc_url($crown); ?>);
+                        background-size: contain;
+                        background-repeat: no-repeat;
+                        background-position: center;
+                        left: 15px;
+                    }
+                    .wt-seq-outline-btn:hover{
+                        text-decoration: none;
+                        transform: translateY(2px);
+                        transition: all .2s ease;
+                    }
+                </style>
+                <div class="wt-seq-sidebar">
+                    <div class="wt-seq-header">
+                      <div class="wt-seq-name">
+                        <img src="<?php echo esc_url($seq_order_logo_url); ?>" alt="featured img" width="36" height="36">
+                        <span class="wt-product-name"><?php echo __('Sequential Order Number for WooCommerce Pro','wt-woocommerce-sequential-order-numbers'); ?></span>
+                      </div>
+                      <div class="wt-seq-mainfeatures">
+                        <ul class="wt-seq-mainfeat">
+                          <li class="money-back"><?php echo __('30 Day Money Back Guarantee','wt-woocommerce-sequential-order-numbers'); ?></li>
+                          <li class="support"><?php echo __('Fast and Superior Support','wt-woocommerce-sequential-order-numbers'); ?></li>
                         </ul>
+                        <div class="wt-seq-btn-wrapper">
+                          <a href="https://www.webtoffee.com/product/woocommerce-sequential-order-numbers/?utm_source=free_plugin_sidebar&utm_medium=sequential_free&utm_campaign=Sequential_Order_Numbers&utm_content=<?php echo WT_SEQUENCIAL_ORDNUMBER_VERSION;?>" class="wt-seq-blue-btn" target="_blank"><?php echo __('UPGRADE TO PREMIUM','wt-woocommerce-sequential-order-numbers'); ?></a>
+                        </div>
+                      </div>
                     </div>
-                    <div class="wt_suggest_button">
+                    <div class="wt-seq-features">
+                      <ul class="wt-seq-allfeat">
+                        <li><?php echo __('Add custom suffix for order numbers','wt-woocommerce-sequential-order-numbers'); ?></li>         
+                        <li><?php echo __('Date suffix in order numbers','wt-woocommerce-sequential-order-numbers'); ?></li>         
+                        <li><?php echo __('Auto reset sequence per month/year etc.','wt-woocommerce-sequential-order-numbers'); ?></li>         
+                        <li><?php echo __('Custom sequence for free orders','wt-woocommerce-sequential-order-numbers'); ?></li> 
+                         <li><?php echo __('More order number templates','wt-woocommerce-sequential-order-numbers'); ?></li>         
+                        <li><?php echo __('Increment sequence in custom series','wt-woocommerce-sequential-order-numbers'); ?>
+                      </ul>
+                      <div class="wt-seq-btn-wrapper">
+                        <a href="https://www.webtoffee.com/product/woocommerce-sequential-order-numbers/?utm_source=free_plugin_sidebar&utm_medium=sequential_free&utm_campaign=Sequential_Order_Numbers&utm_content=<?php echo WT_SEQUENCIAL_ORDNUMBER_VERSION;?>" class="wt-seq-outline-btn" target="_blank">UPGRADE TO PREMIUM</a>
+                      </div>
+                      <div class="wt_suggest_button">
                         <button class="wt_button" id="wt_suggest" >
                             <span style="color:#ffffff;">
                                 <?php echo __('Suggest a feature','wt-woocommerce-sequential-order-numbers'); ?>
                             </span>
                         </button>
                     </div>
+                </div>
                 </div>
                 <div class="wtsequentialordernum-modal" id="wtsequentialordernum-wtsequentialordernum-modal">
                     <div class="wtsequentialordernum-modal-wrap">

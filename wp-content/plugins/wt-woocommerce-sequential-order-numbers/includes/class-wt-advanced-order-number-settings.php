@@ -110,7 +110,7 @@ class Wt_Advanced_Order_Number_Settings_Page extends WC_Settings_Page {
 					'title' => __( 'Start Number', 'wt-woocommerce-sequential-order-numbers' ),
 					'type' => 'number',
 					'desc_tip' => __( 'The start number will be the first number for your order. For eg, if you enter 100 as starting number, the first order number will be 100.','wt-woocommerce-sequential-order-numbers'),
-					'desc' => '<span style="color:#646970; font-size :14px; font-weight:500;">'.__( 'Preview : wt_01/01/1971_1', 'wt-woocommerce-sequential-order-numbers' ).'</span>',
+					'desc' => '<span style="color:#646970; font-size :14px; font-weight:500;">'.__( 'Preview : ', 'wt-woocommerce-sequential-order-numbers' ).'</span>',
 					'id'	=> 'wt_sequence_order_number_start',
 					'default'  => 1,
 					'css' => 'min-width:300px;',
