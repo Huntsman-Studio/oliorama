@@ -68,3 +68,26 @@ button.primary{
     background: linear-gradient(90deg, #ffbc21, #ffd21d);
     box-shadow: 0px 3px 70px 0px rgba(255, 202, 31, 0.50);
 }
+// hover
+button.primary:hover{
+    box-shadow: 0px 0px 60px 0px rgba(255, 202, 31, 0.50);
+}
+// focus
+button.primary:focus{
+    box-shadow: none;
+}
+
+// Third Button
+button.third{
+    background: #191919;
+    border: 2px solid transparent;
+}
+// hover
+button.third:hover{
+    background: #333333;
+}
+// focus
+button.third:focus{
+    background: #0c0c0c;
+    border: 2px solid #333333;
+}
