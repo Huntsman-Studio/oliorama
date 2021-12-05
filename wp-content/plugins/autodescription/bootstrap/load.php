@@ -52,7 +52,8 @@ function _init_locale() {
  *
  * @since 3.1.0
  * @access private
- * @see function the_seo_framework().
+ * @see function tsf().
+ * @see function tsf().
  * @factory
  *
  * @return object|null The SEO Framework Facade class object. Null on failure.
@@ -94,13 +95,13 @@ function _init_tsf() {
 		 */
 		\do_action( 'the_seo_framework_loaded' );
 	} else {
-		$tsf         = new Silencer();
+		$tsf         = new Internal\Silencer();
 		$tsf->loaded = false;
 	}
 
 	// did_action() checks for current action too.
 	if ( ! \did_action( 'plugins_loaded' ) )
-		$tsf->_doing_it_wrong( 'the_seo_framework() or ' . __FUNCTION__, 'Use <code>the_seo_framework()</code> after action <code>plugins_loaded</code> priority 5.', '3.1' );
+		$tsf->_doing_it_wrong( 'tsf(), the_seo_framework(), or ' . __FUNCTION__, 'Use <code>tsf()</code> after action <code>plugins_loaded</code> priority 5.', '3.1' );
 
 	return $tsf;
 }
@@ -111,11 +112,12 @@ spl_autoload_register( __NAMESPACE__ . '\\_autoload_classes', true, true );
  * the plugin classes.
  *
  * @since 2.8.0
- * @since 3.1.0 : 1. No longer maintains cache.
- *                2. Now always returns void.
- * @since 4.0.0 : 1. Streamlined folder lookup by more effectively using the namespace.
- *                2. Added timing functionality
- *                3. No longer loads interfaces automatically.
+ * @since 3.1.0 1. No longer maintains cache.
+ *              2. Now always returns void.
+ * @since 4.0.0 1. Streamlined folder lookup by more effectively using the namespace.
+ *              2. Added timing functionality
+ *              3. No longer loads interfaces automatically.
+ * @since 4.2.0 Now supports mixed class case.
  * @uses THE_SEO_FRAMEWORK_DIR_PATH_CLASS
  * @access private
  *
@@ -127,7 +129,10 @@ spl_autoload_register( __NAMESPACE__ . '\\_autoload_classes', true, true );
  */
 function _autoload_classes( $class ) {
 
-	if ( 0 !== strpos( $class, 'The_SEO_Framework\\', 0 ) ) return;
+	$class = strtolower( $class );
+
+	// It's The_SEO_Framework, not the_seo_framework! -- Sybre's a nightmare, honestly! No wonder he hasn't gotten any friends.
+	if ( 0 !== strpos( $class, 'the_seo_framework\\', 0 ) ) return;
 
 	static $_timenow = true;
 	// Lock $_timenow to prevent stacking timers during class extending. This is released when the class stack loaded.
@@ -138,7 +143,7 @@ function _autoload_classes( $class ) {
 		$_bootstrap_timer = 0;
 	}
 
-	$_chunks       = explode( '\\', strtolower( $class ) );
+	$_chunks       = explode( '\\', $class );
 	$_chunck_count = \count( $_chunks );
 
 	if ( $_chunck_count > 2 ) {
@@ -152,7 +157,7 @@ function _autoload_classes( $class ) {
 	$file = str_replace( '_', '-', end( $_chunks ) );
 
 	// The extension is deemed to be ".class.php" always. We may wish to alter this for traits?
-	require THE_SEO_FRAMEWORK_DIR_PATH_CLASS . $rel_dir . $file . '.class.php';
+	require THE_SEO_FRAMEWORK_DIR_PATH_CLASS . "{$rel_dir}{$file}.class.php";
 
 	if ( $_bootstrap_timer ) {
 		_bootstrap_timer( microtime( true ) - $_bootstrap_timer );

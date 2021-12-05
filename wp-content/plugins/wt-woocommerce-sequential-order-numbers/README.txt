@@ -3,8 +3,8 @@ Contributors: webtoffee
 Donate link: https://www.webtoffee.com/plugins/
 Tags: sequential order number, custom order number, order number, sequential order, woocommerce, sequential, woocommerce sequential order number, advanced order number, woocommerce custom order number, change order number, woocommerce change order number, woocommerce order numbers
 Requires at least: 3.0.1
-Tested up to: 5.9
-Stable tag: 1.4.1
+Tested up to: 5.8
+Stable tag: 1.4.2
 Requires PHP: 5.6
 License: GPLv3
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
@@ -44,7 +44,7 @@ When you activate the sequential order number plugin, if you have no orders in y
 
 == Installation and Setup of the Sequential Order Number Plugin ==
 
-To learn about the installation and setup of this free sequential order plugin, visit the <a rel="nofollow" href="https://www.webtoffee.com/sequential-order-number-woocommerce-plugin-user-guide/"> WooCommerce sequential order number plugin</a> documentation. 
+To learn about the installation and setup of this free sequential order plugin, visit the <a rel="nofollow" href="https://www.webtoffee.com/sequential-order-number-woocommerce-plugin-user-guide/" target="_blank" > WooCommerce sequential order number plugin</a> documentation. 
 
 ==Premium Version Features==
  
@@ -65,8 +65,11 @@ By Inpsyde GmbH](https://wordpress.org/plugins/woo-paypalplus/)
 * [PayPal for WooCommerce By AngellEye](https://www.angelleye.com/product/woocommerce-paypal-plugin/)
 * [WooCommerce PDF Invoices, Packing Slips, Delivery Notes and Shipping Labels By WebToffee](https://www.webtoffee.com/product/woocommerce-pdf-invoices-packing-slips/)
 * [PayPal Express Checkout Plugin for WooCommerce By WebToffee](https://www.webtoffee.com/product/paypal-express-checkout-gateway-for-woocommerce/)
+* [Mollie Payments for WooCommerce By Mollie](https://wordpress.org/plugins/mollie-payments-for-woocommerce/)
 * [WooCommerce Subscriptions](https://woocommerce.com/products/woocommerce-subscriptions/)
 * [Point of Sale POS for WooCommerce](https://wordpress.org/plugins/point-of-sale-pos-woocommerce/)
+* [WooCommerce Stripe Payment Gateway By WebToffee](https://www.webtoffee.com/product/woocommerce-stripe-payment-gateway/)
+* [Stripe By WooCommerce](https://woocommerce.com/products/stripe/)
 * [WooCommerce POS](https://wordpress.org/plugins/woocommerce-pos/)
 * [WPML](https://wpml.org/)
 
@@ -136,6 +139,13 @@ Yes. It's possible to add order date prefix.
 
 
 == Changelog ==
+
+= 1.4.2 =
+* [Add] - Free vs Pro section.
+* [Fix] - Sequential order number not saved to database while creating an order issue is fixed.
+* [Fix] - Returning post_id in order mails issue is fixed.
+* [Compatibility] - Stripe Payment Gateway Plugin for WooCommerce by WebToffee.
+* [Compatibility] - Mollie Payments for WooCommerce By Mollie
 
 = 1.4.1 =
 * [Enhancement] - Pro version banner.
@@ -312,7 +322,9 @@ Yes. It's possible to add order date prefix.
 
 == Upgrade Notice ==
 
-= 1.4.1 =
-* [Enhancement] - Pro version banner.
-* [Enhancement] - Minor code refactoring.
-* [Compatibility] - WooCommerce 5.9
+= 1.4.2 =
+* [Add] - Free vs Pro section.
+* [Fix] - Sequential order number not saved to database while creating an order issue is fixed.
+* [Fix] - Returning post_id in order mails issue is fixed.
+* [Compatibility] - Stripe Payment Gateway Plugin for WooCommerce by WebToffee.
+* [Compatibility] - Mollie Payments for WooCommerce By Mollie

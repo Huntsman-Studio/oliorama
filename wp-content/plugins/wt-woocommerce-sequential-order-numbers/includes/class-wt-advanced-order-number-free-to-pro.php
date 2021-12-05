@@ -37,7 +37,7 @@ if (!class_exists('WT_Sequentialordnum_free_to_pro')) :
         }
         public function show_banners()
         { 
-            if(isset($_GET['page']) && $_GET['page']=='wc-settings' && isset($_GET['tab']) && $_GET['tab']=='wts_settings')
+            if(isset($_GET['page']) && $_GET['page']=='wc-settings' && isset($_GET['tab']) && $_GET['tab']=='wts_settings' && ((isset($_GET['section']) && $_GET['section'] =='') || !isset($_GET['section'])))
             {
                 $seq_order_logo_url=WT_SEQUENCIAL_ORDNUMBER_URL.'assets/images/logo.png';
                 $tick=WT_SEQUENCIAL_ORDNUMBER_URL.'assets/images/tick.svg';
@@ -45,6 +45,7 @@ if (!class_exists('WT_Sequentialordnum_free_to_pro')) :
                 $white_crown=WT_SEQUENCIAL_ORDNUMBER_URL.'assets/images/white-crown.svg';
                 $money_back=WT_SEQUENCIAL_ORDNUMBER_URL.'assets/images/money-back.svg';
                 $support=WT_SEQUENCIAL_ORDNUMBER_URL.'assets/images/support.svg';
+                $webtoffee_logo='<img src="'.WT_SEQUENCIAL_ORDNUMBER_URL.'assets/images/wt_logo.png" style="" />&nbsp;';
                 $reasons = $this->get_suggested_feature();
                 ?>
                 <style>
@@ -83,7 +84,7 @@ if (!class_exists('WT_Sequentialordnum_free_to_pro')) :
                     }
                     .wt_seq_settings_right{ 
                         float:left; 
-                        width:30%; 
+                        width:31%; 
                         padding-left: 25px;
                     }
                     p.submit{ 
@@ -203,6 +204,7 @@ if (!class_exists('WT_Sequentialordnum_free_to_pro')) :
                         text-decoration: none;
                         transform: translateY(2px);
                         transition: all .2s ease;
+                        color: #FFFFFF;
                     }
                     .wt-seq-features{
                         padding: 40px 30px 25px 30px;
@@ -270,7 +272,25 @@ if (!class_exists('WT_Sequentialordnum_free_to_pro')) :
                         transform: translateY(2px);
                         transition: all .2s ease;
                     }
+                    .wfte_branding{
+                        text-align:end; 
+                        width: 100%;
+                    }
+                    .wfte_branding_label{
+                        width: 100%; 
+                        padding-top: 20px;
+                        padding-bottom: 10px;
+                        font-size: 11px;
+                        font-weight: 600;
+                    }
                 </style>
+                <div class="wfte_branding">
+                    <div class="wfte_branding_label"><?php _e('Sequential order numbers for WooCommerce | Developed by', 'wt-woocommerce-sequential-order-numbers'); ?>
+                    </div>
+                    <div style="width: 100%; padding-bottom: 10px;">
+                        <?php echo $webtoffee_logo; ?>
+                    </div>
+                </div>
                 <div class="wt-seq-sidebar">
                     <div class="wt-seq-header">
                       <div class="wt-seq-name">

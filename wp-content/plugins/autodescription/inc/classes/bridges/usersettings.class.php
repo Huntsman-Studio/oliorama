@@ -43,7 +43,7 @@ final class UserSettings {
 	 *
 	 * @param \WP_User $user WP_User object.
 	 */
-	public static function _prepare_setting_fields( \WP_User $user ) {
+	public static function _prepare_setting_fields( $user ) {
 
 		if ( ! $user->has_cap( THE_SEO_FRAMEWORK_AUTHOR_INFO_CAP ) ) return;
 
@@ -57,12 +57,12 @@ final class UserSettings {
 	 *
 	 * @param \WP_User $user WP_User object.
 	 */
-	private static function add_user_author_fields( \WP_User $user ) {
+	private static function add_user_author_fields( $user ) { // phpcs:ignore, VariableAnalysis.CodeAnalysis.VariableAnalysis -- get_defined_vars() is used later.
 		/**
 		 * @since 4.1.4
 		 */
 		\do_action( 'the_seo_framework_before_author_fields' );
-		\the_seo_framework()->get_view( 'profile/author', get_defined_vars() );
+		\tsf()->get_view( 'profile/author', get_defined_vars() );
 		/**
 		 * @since 4.1.4
 		 */

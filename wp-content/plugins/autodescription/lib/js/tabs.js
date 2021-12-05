@@ -37,15 +37,6 @@
 window.tsfTabs = function() {
 
 	/**
-	 * Data property injected by WordPress l10n handler.
-	 *
-	 * @since 4.1.3
-	 * @access public
-	 * @type {(Object<string, *>)|boolean|null} l10n Localized strings
-	 */
-	const l10n = 'undefined' !== typeof tsfTabsL10n && tsfTabsL10n;
-
-	/**
 	 * @since 4.1.3
 	 * @access protected (readonly)
 	 * @see tsfTabs.getStack()
@@ -96,14 +87,13 @@ window.tsfTabs = function() {
 		const stack      = getStack( stackId );
 		const newContent = document.getElementById( `${target.id}-content` );
 
-		if ( ! newContent.classList.contains( stack.HTMLClasses.activeTabContent ) ) {
-			const allContent = document.querySelectorAll( `.${target.name}-content` );
-
-			allContent && allContent.forEach( element => {
+		if ( newContent && ! newContent.classList.contains( stack.HTMLClasses.activeTabContent ) ) {
+			// Toggle all active content's HTML classes.
+			document.querySelectorAll( `.${target.name}-content` ).forEach( element => {
 				element.classList.remove( stack.HTMLClasses.activeTabContent );
 			} );
 
-			newContent && newContent.classList.add( stack.HTMLClasses.activeTabContent );
+			newContent.classList.add( stack.HTMLClasses.activeTabContent );
 		}
 
 		document.getElementById( target.id ).dispatchEvent( stack.tabToggledEvent );
@@ -349,7 +339,6 @@ window.tsfTabs = function() {
 		 * @access protected
 		 *
 		 * @function
-		 * @return {undefined}
 		 */
 		load: () => {
 			_toggleCache.set( 'promises', new Map() );
@@ -365,8 +354,6 @@ window.tsfTabs = function() {
 		toggleTo,
 		getStack,
 		initStack,
-	}, {
-		l10n,
 	} );
 }();
 window.tsfTabs.load();

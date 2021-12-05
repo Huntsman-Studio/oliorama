@@ -1,11 +1,10 @@
 <?php
 
 /**
- *	WooCommerce settings page 
- * 
+ *	WooCommerce settings page
+ *
  *	This code creates a full WooCommerce settings page by extending the WC_Settings_Page class.
  *	By extending the WC_Settings_Page class, we can control every part of the settings page.
- *
  *
  */
 
@@ -21,7 +20,8 @@ class Wt_Advanced_Order_Number_Settings_Page extends WC_Settings_Page {
 	public function __construct() {
 
 		$this->id = 'wts_settings';
-		$this->label = __('Sequential Order Number','wt-woocommerce-sequential-order-numbers');
+		$this->label = __('Sequential Order Number', 'wt-woocommerce-sequential-order-numbers' );
+
 		/**
 		 *	Define all hooks instead of inheriting from parent
 		 */
@@ -31,14 +31,56 @@ class Wt_Advanced_Order_Number_Settings_Page extends WC_Settings_Page {
 		// Add the tab to the tabs array
 		add_filter( 'woocommerce_settings_tabs_array', array( $this, 'add_settings_page' ), 20 );
 
+		// Add new section to the page
+		add_action( 'woocommerce_sections_' . $this->id, array( $this, 'output_sections' ) );
+
 		// Add settings
-		add_action( 'woocommerce_settings_' . $this->id, array( $this, 'output' ) , 20 );
+		add_action( 'woocommerce_settings_' . $this->id, array( $this, 'output' ) );
 
 		// Process/save the settings
-		add_action( 'woocommerce_settings_save_' . $this->id, array( $this, 'save' ) ,20 );
+		add_action( 'woocommerce_settings_save_' . $this->id, array( $this, 'save' ) );
 	}
 
-	
+	/**
+	 *	Get sections
+	 *
+	 *	@return array
+	 */
+	public function get_sections() {
+
+		// Must contain more than one section to display the links
+		// Make first element's key empty ('')
+		$sections = array(
+			'' => __( 'Settings', 'wt-woocommerce-sequential-order-numbers' ),
+			'free_vs_pro' => __( 'Free vs. Pro', 'wt-woocommerce-sequential-order-numbers' )
+		);
+
+		return apply_filters( 'woocommerce_get_sections_' . $this->id, $sections );
+	}
+
+	/**
+	 *	Output sections
+	 */
+	public function output_sections() {
+
+		global $current_section;
+
+		$sections = $this->get_sections();
+
+		if ( empty( $sections ) || 1 === sizeof( $sections ) ) {
+			return;
+		}
+
+		echo '<ul class="subsubsub">';
+
+		$array_keys = array_keys( $sections );
+
+		foreach ( $sections as $id => $label ) {
+			echo '<li><a href="' . esc_url(admin_url( 'admin.php?page=wc-settings&tab=' . $this->id . '&section=' . sanitize_title( $id ) ) ). '" class="' . esc_attr(( $current_section == $id ? 'current' : '' )) . '">' . esc_html($label) . '</a> ' . ( end( $array_keys ) == $id ? '' : '|' ) . ' </li>';
+		}
+
+		echo '</ul><br class="clear" />';
+	}
 
 	/**
 	 *	Get settings array
@@ -46,6 +88,18 @@ class Wt_Advanced_Order_Number_Settings_Page extends WC_Settings_Page {
 	 *	@return array
 	 */
 	public function get_settings() {
+
+		global $current_section;
+
+		$settings = array();
+
+		
+		if ( $current_section == 'free_vs_pro' ) 
+		{
+			$settings = array();
+		}
+		else
+		{
 
 			$settings = array(
 
@@ -56,7 +110,7 @@ class Wt_Advanced_Order_Number_Settings_Page extends WC_Settings_Page {
 					'id' => 'wt_sequencial_settings_page',
 				),
 				array(
-					'name' =>__('','wt-woocommerce-sequential-order-numbers'),
+					'name' =>__(' ','wt-woocommerce-sequential-order-numbers'),
 					'type' => 'title',
 					'desc' =>  __(sprintf(
 								'<a href="%s" target="_blank">%s</a>',
@@ -147,6 +201,7 @@ class Wt_Advanced_Order_Number_Settings_Page extends WC_Settings_Page {
 					'id' => 'wts_settings'
 				),
 			);
+		}
 
 		return apply_filters( 'woocommerce_get_settings_' . $this->id, $settings );
 	}
@@ -155,13 +210,25 @@ class Wt_Advanced_Order_Number_Settings_Page extends WC_Settings_Page {
 	 *	Output the settings
 	 */
 	public function output() {
+
 		$settings = $this->get_settings();
+
 		echo '<div class="wt_seq_settings_left">';
+
 		WC_Admin_Settings::output_fields( $settings );
+
 		echo '</div>
 			  <div class="wt_seq_settings_right">';
 					do_action('wt_seq_settings_right');
 		echo '</div>';
+
+		// add free_vs_pro page
+		if(isset($_GET['page']) && $_GET['page']=='wc-settings' && isset($_GET['tab']) && $_GET['tab']=='wts_settings' && isset($_GET['section']) && $_GET['section'] =='free_vs_pro')
+        {
+			do_action('wt_sequential_free_vs_pro_section');
+			do_action('wt_sequential_free_vs_pro_section_bottom');
+		}
+		
 	}
 
 	/**
@@ -171,11 +238,20 @@ class Wt_Advanced_Order_Number_Settings_Page extends WC_Settings_Page {
 	 */
 	public function save() {
 
+		global $current_section;
+
 		$settings = $this->get_settings();
 
 		WC_Admin_Settings::save_fields( $settings );
-		
-		Wt_Advanced_Order_Number::save_settings();
+
+		if ( $current_section !== 'free_vs_pro') 
+		{
+			Wt_Advanced_Order_Number::save_settings();
+		}
+		if ( $current_section ) {
+			do_action( 'woocommerce_update_options_' . $this->id . '_' . $current_section );
+		}
+
 
 	}
 }

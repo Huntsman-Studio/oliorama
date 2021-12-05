@@ -22,7 +22,7 @@ class Wt_Advanced_Order_Number_Admin {
 
     public function enqueue_scripts() {
         //wp_enqueue_script($this->plugin_name, plugin_dir_url(__FILE__) . 'js/wt-advanced-order-number-admin.js', array('jquery'), $this->version, false);
-        if(isset($_GET['page']) && $_GET['page']=='wc-settings' && isset($_GET['tab']) && $_GET['tab']=='wts_settings')
+        if(isset($_GET['page']) && $_GET['page']=='wc-settings' && isset($_GET['tab']) && $_GET['tab']=='wts_settings' && ((isset($_GET['section']) && $_GET['section'] =='') || !isset($_GET['section'])))
         {
             wp_enqueue_script($this->plugin_name, plugin_dir_url(__FILE__) . 'views/wt-settings-screen.js', array('jquery'), $this->version);
             $params=array(

@@ -169,7 +169,7 @@ class Cache extends Site_Options {
 	 * @param array  $args Additional arguments. They can overwrite $type and $id.
 	 * @return bool true on success, false on failure.
 	 */
-	public function delete_cache( $type, $id = 0, array $args = [] ) {
+	public function delete_cache( $type, $id = 0, $args = [] ) {
 
 		$this->parse_delete_cache_keys( $type, $id, $args );
 
@@ -192,7 +192,7 @@ class Cache extends Site_Options {
 		 * @since 3.1.0
 		 *
 		 * @param string $type    The flush type. Comes in handy when you use a catch-all function.
-		 * @param int    $id      The post, page or TT ID. Defaults to the_seo_framework()->get_the_real_ID().
+		 * @param int    $id      The post, page or TT ID. Defaults to tsf()->get_the_real_ID().
 		 * @param array  $args    Additional arguments. They can overwrite $type and $id.
 		 * @param bool   $success Whether the action cleared.
 		 */
@@ -212,7 +212,7 @@ class Cache extends Site_Options {
 	 */
 	protected function parse_delete_cache_keys( &$type, &$id, &$args ) {
 
-		//= Don't use cache on fetching ID.
+		// Don't use cache on fetching ID.
 		$id = $id ?: $this->get_the_real_ID( false );
 
 		$defaults = [
@@ -249,9 +249,7 @@ class Cache extends Site_Options {
 	 * @param int    $expiration Transient expiration date, optional. Expected to not be SQL-escaped.
 	 */
 	public function set_transient( $transient, $value, $expiration = 0 ) {
-
-		if ( $this->the_seo_framework_use_transients )
-			\set_transient( $transient, $value, $expiration );
+		$this->the_seo_framework_use_transients and \set_transient( $transient, $value, $expiration );
 	}
 
 	/**
@@ -288,7 +286,7 @@ class Cache extends Site_Options {
 	 */
 	public function get_exclusion_transient_name() {
 		$exclude_revision = '1'; // WARNING: SEE NOTE
-		return $this->add_cache_key_suffix( 'tsf_exclude_' . $exclude_revision );
+		return $this->add_cache_key_suffix( "tsf_exclude_{$exclude_revision}" );
 	}
 
 	/**
@@ -300,7 +298,7 @@ class Cache extends Site_Options {
 	 */
 	public function get_sitemap_transient_name() {
 		$sitemap_revision = '5';
-		return $this->get_option( 'cache_sitemap' ) ? $this->add_cache_key_suffix( 'tsf_sitemap_' . $sitemap_revision ) : '';
+		return $this->get_option( 'cache_sitemap' ) ? $this->add_cache_key_suffix( "tsf_sitemap_{$sitemap_revision}" ) : '';
 	}
 
 	/**
@@ -310,8 +308,8 @@ class Cache extends Site_Options {
 	 *
 	 * @since 2.3.3
 	 * @since 2.6.0 Refactored.
-	 * @since 2.9.1 : 1. Added early singular type detection.
-	 *                2. Moved generation into another method (v4.1.4: removed method).
+	 * @since 2.9.1 1. Added early singular type detection.
+	 *              2. Moved generation into another method (v4.1.4: removed method).
 	 * @since 3.1.1 The first parameter is now optional.
 	 * @since 4.1.4 No longer generates a cache key when no `$type` is supplied.
 	 * @TODO since we only support by type, it'd be best to rework this into something simple.
@@ -322,11 +320,7 @@ class Cache extends Site_Options {
 	 * @return string The generated cache key by query or type.
 	 */
 	public function generate_cache_key( $id = 0, $taxonomy = '', $type = null ) {
-
-		if ( isset( $type ) )
-			return $this->generate_cache_key_by_type( $id, $taxonomy, $type );
-
-		return '';
+		return isset( $type ) ? $this->generate_cache_key_by_type( $id, $taxonomy, $type ) : '';
 	}
 
 	/**
@@ -354,7 +348,7 @@ class Cache extends Site_Options {
 				return $this->add_cache_key_suffix( 'tsf_sitemap_lock' );
 			default:
 				$this->_doing_it_wrong( __METHOD__, 'Third parameter must be a known type.', '2.6.5' );
-				return $this->add_cache_key_suffix( \esc_sql( $type . '_' . $page_id . '_' . $taxonomy ) );
+				return $this->add_cache_key_suffix( \esc_sql( "{$type}_{$page_id}_{$taxonomy}" ) );
 		endswitch;
 	}
 
@@ -371,7 +365,10 @@ class Cache extends Site_Options {
 	 * @return string
 	 */
 	protected function add_cache_key_suffix( $key = '' ) {
-		return $key . '_' . $GLOBALS['blog_id'] . '_' . strtolower( \get_locale() );
+
+		$locale = strtolower( \get_locale() );
+
+		return "{$key}_{$GLOBALS['blog_id']}_{$locale}";
 	}
 
 	/**
@@ -425,11 +422,12 @@ class Cache extends Site_Options {
 			'the_seo_framework_sitemap_transient_cleared',
 			[
 				'ping_use_cron'           => $ping_use_cron,
-				'ping_use_cron_prerender' => $ping_use_cron_prerender,
+				'ping_use_cron_prerender' => $ping_use_cron_prerender, // TODO migrate this so it can run regardless of pinging?
 			]
 		);
 
 		if ( $ping_use_cron ) {
+			// This name is wrong. It's not exclusively used for pinging.
 			\The_SEO_Framework\Bridges\Ping::engage_pinging_cron();
 		} else {
 			\The_SEO_Framework\Bridges\Ping::ping_search_engines();
@@ -453,62 +451,60 @@ class Cache extends Site_Options {
 	 */
 	public function get_excluded_ids_from_cache() {
 
-		if ( $this->is_headless['meta'] ) return [
-			'archive' => '',
-			'search'  => '',
-		];
-
-		static $cache = null;
-
-		if ( null === $cache )
-			$cache = $this->get_transient( $this->get_exclusion_transient_name() );
-
-		if ( false === $cache ) {
-			global $wpdb;
-
-			$supported_post_types = $this->get_supported_post_types();
-			$public_post_types    = $this->get_public_post_types();
-
-			$join  = '';
-			$where = '';
-			if ( $supported_post_types !== $public_post_types ) {
-				// Post types can be registered arbitrarily through other plugins, even manually by non-super-admins. Prepare!
-				$post_type__in = "'" . implode( "','", array_map( '\\esc_sql', $supported_post_types ) ) . "'";
-
-				// This is as fast as I could make it. Yes, it uses IN, but only on a (tiny) subset of data.
-				$join  = "LEFT JOIN {$wpdb->posts} ON {$wpdb->postmeta}.post_id = {$wpdb->posts}.ID";
-				$where = "AND {$wpdb->posts}.post_type IN ($post_type__in)";
-			}
-
-			//= Two separated equals queries are faster than a single IN with 'meta_key'.
-			// phpcs:disable, WordPress.DB.PreparedSQL.InterpolatedNotPrepared -- We prepared our whole lives.
-			$cache = [
-				'archive' => $wpdb->get_results(
-					"SELECT post_id, meta_value FROM $wpdb->postmeta $join WHERE meta_key = 'exclude_from_archive' $where"
-				),
-				'search'  => $wpdb->get_results(
-					"SELECT post_id, meta_value FROM $wpdb->postmeta $join WHERE meta_key = 'exclude_local_search' $where"
-				),
+		if ( $this->is_headless['meta'] )
+			return [
+				'archive' => '',
+				'search'  => '',
 			];
-			// phpcs:enable, WordPress.DB.PreparedSQL.InterpolatedNotPrepared
 
-			foreach ( [ 'archive', 'search' ] as $type ) {
-				array_walk(
-					$cache[ $type ],
-					static function( &$v ) {
-						if ( isset( $v->meta_value, $v->post_id ) && $v->meta_value ) {
-							$v = (int) $v->post_id;
-						} else {
-							$v = false;
-						}
-					}
-				);
-				$cache[ $type ] = array_filter( $cache[ $type ] );
-			}
+		$cache = memo() ?? memo( $this->get_transient( $this->get_exclusion_transient_name() ) );
 
-			$this->set_transient( $this->get_exclusion_transient_name(), $cache, 0 );
+		if ( false !== $cache ) return $cache;
+
+		global $wpdb;
+
+		$supported_post_types = $this->get_supported_post_types();
+		$public_post_types    = $this->get_public_post_types();
+
+		$join  = '';
+		$where = '';
+		if ( $supported_post_types !== $public_post_types ) {
+			// Post types can be registered arbitrarily through other plugins, even manually by non-super-admins. Prepare!
+			$post_type__in = "'" . implode( "','", array_map( 'esc_sql', $supported_post_types ) ) . "'";
+
+			// This is as fast as I could make it. Yes, it uses IN, but only on a (tiny) subset of data.
+			$join  = "LEFT JOIN {$wpdb->posts} ON {$wpdb->postmeta}.post_id = {$wpdb->posts}.ID";
+			$where = "AND {$wpdb->posts}.post_type IN ($post_type__in)";
 		}
 
-		return $cache;
+		// Two separated equals queries are faster than a single IN with 'meta_key'.
+		// phpcs:disable, WordPress.DB.PreparedSQL.InterpolatedNotPrepared -- We prepared our whole lives.
+		$cache = [
+			'archive' => $wpdb->get_results(
+				"SELECT post_id, meta_value FROM $wpdb->postmeta $join WHERE meta_key = 'exclude_from_archive' $where"
+			),
+			'search'  => $wpdb->get_results(
+				"SELECT post_id, meta_value FROM $wpdb->postmeta $join WHERE meta_key = 'exclude_local_search' $where"
+			),
+		];
+		// phpcs:enable, WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+
+		foreach ( [ 'archive', 'search' ] as $type ) {
+			array_walk(
+				$cache[ $type ],
+				static function( &$v ) {
+					if ( isset( $v->meta_value, $v->post_id ) && $v->meta_value ) {
+						$v = (int) $v->post_id;
+					} else {
+						$v = false;
+					}
+				}
+			);
+			$cache[ $type ] = array_filter( $cache[ $type ] );
+		}
+
+		$this->set_transient( $this->get_exclusion_transient_name(), $cache, 0 );
+
+		return memo( $cache );
 	}
 }

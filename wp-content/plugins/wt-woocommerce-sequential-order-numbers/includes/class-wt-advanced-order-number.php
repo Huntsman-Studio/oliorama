@@ -14,7 +14,7 @@ class Wt_Advanced_Order_Number {
         if (defined('WT_SEQUENCIAL_ORDNUMBER_VERSION')) {
             $this->version = WT_SEQUENCIAL_ORDNUMBER_VERSION;
         } else {
-            $this->version = '1.4.1';
+            $this->version = '1.4.2';
         }
         $this->plugin_name = 'wt-advanced-order-number';
         $this->plugin_base_name = WT_SEQUENCIAL_ORDNUMBER_BASE_NAME;
@@ -382,6 +382,8 @@ class Wt_Advanced_Order_Number {
                 $res = $wpdb->query($query);
 
                 update_option('wt_last_order_number', $next_insert_id,'no');
+
+                $order->save();
             }
         }
     }
