@@ -15,7 +15,9 @@
                         <!-- Image -->
                         <div><img class="w-28" src="wp-content/uploads/2021/10/menu-olive-oil.png" alt="Olive Oil"/></div>
                         <!-- Item -->
-                        <div><h1 class="text-white text-xl font-bold">Olive Oil</h1></div>
+                        <a href="https://oliorama.com">
+                            <div><h1 class="text-white text-xl font-bold">Olive Oil</h1></div>
+                        </a>
                         <!-- Hover icon -->
                         <div class="hover-effect ml-4"></div>
                     </li>

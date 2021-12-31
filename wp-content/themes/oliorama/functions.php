@@ -5,6 +5,8 @@ include 'inc/set-image-data.php';
 // Theme support
 include 'inc/theme_support.php';
 
+// include 'templates/pages/olive_oil.php';
+
 if ( ! defined( 'OLIORAMA_DIR_PATH' ) ) {
 	define( 'OLIORAMA_DIR_PATH', untrailingslashit( get_template_directory() ) );
 }
