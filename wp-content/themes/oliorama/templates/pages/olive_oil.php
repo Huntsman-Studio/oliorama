@@ -1,8 +1,16 @@
 <div class="flex flex-col justify-center items-center pl-6 pr-6">
 
-    <h2 class="text-white font-extrabold text-xl">Extra Virgin Olive Oil</h2>
+    <div>
+        <h2 class="text-white font-extrabold text-center text-xl">Extra Virgin Olive Oil</h2>
 
-    <p class="pt-4 font-normal text-left text-white text-sm">In Greece more and more olive oil producers are changing their olive groves from conventional to organic. In organic olive oil farming, no chemical fertilizers or pesticides are used at any stage of production, harvesting is done by hand or mechanized harvest machines, while olive oil is produced by cold extraction at low temperatures to ensure the best, most natural and safest result.</p>
+        <p class="pt-4 font-normal text-left text-white text-sm">In Greece more and more olive oil producers are changing their olive groves from conventional to organic. In organic olive oil farming, no chemical fertilizers or pesticides are used at any stage of production, harvesting is done by hand or mechanized harvest machines, while olive oil is produced by cold extraction at low temperatures to ensure the best, most natural and safest result.</p>
+
+        <h3 class="pt-8 text-white font-bold text-left text-lg">Daily Treasure</h3>
+    </div>
+
+    <div>
+
+    </div>
 
     <!-- Loop Products -->
     <?php
