@@ -42,7 +42,7 @@
                     <!-- Gifts -->
                     <li class="flex items-center pt-3 cursor-pointer">
                         <!-- Image -->
-                        <div><img class="w-28" src="wp-content/uploads/2021/10/menu-gift.png" alt="Gifts"/></div>
+                        <div><img class="w-28" src="http://localhost:8888/oliorama/wp-content/uploads/2021/10/menu-gift.png" alt="Gifts"/></div>
                         <!-- Item -->
                         <div><h1 class="text-white text-xl font-bold">Gifts</h1></div>
                         <!-- Hover icon -->
