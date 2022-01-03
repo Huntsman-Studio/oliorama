@@ -13,9 +13,9 @@
                     <!-- Olive Oil -->
                     <li class="flex items-center cursor-pointer">
                         <!-- Image -->
-                        <div><img class="w-28" src="wp-content/uploads/2021/10/menu-olive-oil.png" alt="Olive Oil"/></div>
+                        <div><img class="w-28" src="http://localhost:8888/oliorama/wp-content/uploads/2021/10/menu-olive-oil.png" alt="Olive Oil"/></div>
                         <!-- Item -->
-                        <a href="https://oliorama.com">
+                        <a href="http://localhost:8888/oliorama/olive-oil/">
                             <div><h1 class="text-white text-xl font-bold">Olive Oil</h1></div>
                         </a>
                         <!-- Hover icon -->
@@ -24,7 +24,7 @@
                     <!-- Honey -->
                     <li class="flex items-center pt-3 cursor-pointer">
                         <!-- Image -->
-                        <div><img class="w-28" src="wp-content/uploads/2021/10/menu-honey.png" alt="Honey"/></div>
+                        <div><img class="w-28" src="http://localhost:8888/oliorama/wp-content/uploads/2021/10/menu-honey.png" alt="Honey"/></div>
                         <!-- Item -->
                         <div><h1 class="text-white text-xl font-bold">Honey</h1></div>
                         <!-- Hover icon -->
@@ -33,7 +33,7 @@
                     <!-- Herbs -->
                     <li class="flex items-center pt-3 cursor-pointer">
                         <!-- Image -->
-                        <div><img class="w-28" src="wp-content/uploads/2021/10/menu-herbs.png" alt="Herbs"/></div>
+                        <div><img class="w-28" src="http://localhost:8888/oliorama/wp-content/uploads/2021/10/menu-herbs.png" alt="Herbs"/></div>
                         <!-- Item -->
                         <div><h1 class="text-white text-xl font-bold">Herbs</h1></div>
                         <!-- Hover icon -->
