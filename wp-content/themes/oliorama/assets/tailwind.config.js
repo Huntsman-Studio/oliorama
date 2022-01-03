@@ -61,6 +61,12 @@ module.exports = {
         'candy': '#f71c31',
         'mint': '#1cce9f'
       }),
+
+      // backgorund image
+      backgroundImage: {
+        'oliorama-honey': "url('http://localhost:8888/oliorama/wp-content/uploads/2021/11/quality-awarded-organic-products.png')",
+        // 'footer-texture': "url('/img/footer-texture.png')",
+      }
     },
   },
   variants: {
