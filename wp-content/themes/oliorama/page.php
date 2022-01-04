@@ -25,6 +25,10 @@
             get_template_part('templates/pages/gifts');
         }
         
+        // Test
+        if( is_page(73) ){
+            get_template_part('templates/pages/search-form');
+        }
     ?>
     
 </div>

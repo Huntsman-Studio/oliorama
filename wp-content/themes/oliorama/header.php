@@ -21,23 +21,43 @@
 		// Open navigation
 		function openNav(){
 			document.getElementById('nav').classList.remove('hidden');
+			document.getElementById('main-body').classList.add('overflow-hidden');
 		}
 
 		// Close navigation
 		function closeNav(){
 			document.getElementById('nav').classList.add('hidden');
+			document.getElementById('main-body').classList.remove('overflow-hidden');
+		}
+
+		// EmptySearch
+		function emptySearch(){
+			document.getElementById('auto-search').value = '';
+		}
+
+		// OpenSearch
+		function openSearch(){
+			document.getElementById('search-form').classList.remove('hidden');
+			document.getElementById('main-body').classList.add('overflow-hidden');
+		}
+
+		// Close Search
+		function closeSearch(){
+			document.getElementById('search-form').classList.add('hidden');
+			document.getElementById('main-body').classList.remove('overflow-hidden');
 		}
 	</script>
 	<?php wp_head(); ?>
 </head>
 
-<body <?php body_class(); ?>>
+<body id="main-body" <?php body_class(); ?>>
 <?php wp_body_open(); ?>
 <div id="page" class="site">
 	<a class="skip-link screen-reader-text" href="#content"></a>
 
 	<?php get_template_part( 'templates/header/site-header' ); ?>
 	<?php get_template_part( 'templates/header/site-menu' ); ?>
+	<?php get_template_part( 'templates/header/search-form' ); ?>
 
 	<div id="content" class="site-content">
 		<div id="primary" class="content-area">

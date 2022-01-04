@@ -65,6 +65,10 @@ module.exports = {
       // backgorund image
       backgroundImage: {
         'oliorama-honey': "url('http://localhost:8888/oliorama/wp-content/uploads/2021/11/quality-awarded-organic-products.png')",
+        'home-olive-oil': 'url("http://localhost:8888/oliorama/wp-content/uploads/2021/10/testimage.png")',
+        'home-honey': 'url("http://localhost:8888/oliorama/wp-content/uploads/2021/10/testimage.png")',
+        'home-herbs': 'url("http://localhost:8888/oliorama/wp-content/uploads/2021/10/testimage.png")',
+        'home-gifts': 'url("http://localhost:8888/oliorama/wp-content/uploads/2021/11/quality-awarded-organic-products.png")'
         // 'footer-texture': "url('/img/footer-texture.png')",
       }
     },
