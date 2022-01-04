@@ -37,7 +37,9 @@
                         <!-- Image -->
                         <div><img class="w-28" src="http://localhost:8888/oliorama/wp-content/uploads/2021/10/menu-herbs.png" alt="Herbs"/></div>
                         <!-- Item -->
-                        <div><h1 class="text-white text-xl font-bold">Herbs</h1></div>
+                        <a href="http://localhost:8888/oliorama/herbs/">
+                            <div><h1 class="text-white text-xl font-bold">Herbs</h1></div>
+                        </a>
                         <!-- Hover icon -->
                         <div class="hover-effect ml-4"></div>
                     </li>

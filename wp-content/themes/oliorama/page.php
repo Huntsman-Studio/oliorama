@@ -9,9 +9,15 @@
         if( is_page(47) ){
             get_template_part('templates/pages/olive_oil');
         }
-
+        
+        //  Honey
         if( is_page(51) ){
             get_template_part('templates/pages/honey');
+        }
+
+        // Herbs
+        if( is_page(53) ){
+            get_template_part('templates/pages/herbs');
         }
     ?>
     
