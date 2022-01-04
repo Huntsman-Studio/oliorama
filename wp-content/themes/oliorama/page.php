@@ -19,6 +19,12 @@
         if( is_page(53) ){
             get_template_part('templates/pages/herbs');
         }
+
+        // Gifts
+        if( is_page(55) ){
+            get_template_part('templates/pages/gifts');
+        }
+        
     ?>
     
 </div>
