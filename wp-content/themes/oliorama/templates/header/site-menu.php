@@ -2,8 +2,8 @@
     <div>
         <nav class="grid">
             <!-- Title -->
-            <div class="pb-6" type="text">
-                <h1 class="text-gray-cloud font-normal text-2xl">Products</h1>
+            <div class="pb-6 lg:pb-8" type="text">
+                <h1 class="text-gray-cloud font-normal text-2xl lg:text-3xl">Products</h1>
             </div>
             <!-- Line -->
             <div class="border border-carbon-gray border-solid"></div>
@@ -13,53 +13,61 @@
                     <!-- Olive Oil -->
                     <li class="flex items-center cursor-pointer">
                         <!-- Image -->
-                        <div><img class="w-28" src="http://localhost:8888/oliorama/wp-content/uploads/2021/10/menu-olive-oil.png" alt="Olive Oil"/></div>
+                        <div class="lg:mr-5">
+                            <img class="w-28 lg:w-36" src="http://localhost:8888/oliorama/wp-content/uploads/2021/10/menu-olive-oil.png" alt="Olive Oil"/>
+                        </div>
                         <!-- Item -->
                         <a href="http://localhost:8888/oliorama/olive-oil/">
-                            <div><h1 class="text-white text-xl font-bold">Olive Oil</h1></div>
+                            <div><h1 class="text-white text-xl lg:text-3xl font-bold">Olive Oil</h1></div>
                         </a>
                         <!-- Hover icon -->
-                        <div class="hover-effect ml-4"></div>
+                        <div class="hover-effect ml-4 w-2 h-2 lg:w-3 lg:h-3"></div>
                     </li>
                     <!-- Honey -->
                     <li class="flex items-center pt-3 cursor-pointer">
                         <!-- Image -->
-                        <div><img class="w-28" src="http://localhost:8888/oliorama/wp-content/uploads/2021/10/menu-honey.png" alt="Honey"/></div>
+                        <div class="lg:mr-5">
+                            <img class="w-28 lg:w-36" src="http://localhost:8888/oliorama/wp-content/uploads/2021/10/menu-honey.png" alt="Honey"/>
+                        </div>
                         <!-- Item -->
                         <a href="http://localhost:8888/oliorama/honey/">
-                            <div><h1 class="text-white text-xl font-bold">Honey</h1></div>
+                            <div><h1 class="text-white text-xl lg:text-3xl font-bold">Honey</h1></div>
                         </a>
                         <!-- Hover icon -->
-                        <div class="hover-effect ml-4"></div>
+                        <div class="hover-effect ml-4 w-2 h-2 lg:w-3 lg:h-3"></div>
                     </li>
                     <!-- Herbs -->
                     <li class="flex items-center pt-3 cursor-pointer">
                         <!-- Image -->
-                        <div><img class="w-28" src="http://localhost:8888/oliorama/wp-content/uploads/2021/10/menu-herbs.png" alt="Herbs"/></div>
+                        <div class="lg:mr-5">
+                            <img class="w-28 lg:w-36" src="http://localhost:8888/oliorama/wp-content/uploads/2021/10/menu-herbs.png" alt="Herbs"/>
+                        </div>
                         <!-- Item -->
                         <a href="http://localhost:8888/oliorama/herbs/">
-                            <div><h1 class="text-white text-xl font-bold">Herbs</h1></div>
+                            <div><h1 class="text-white text-xl lg:text-3xl font-bold">Herbs</h1></div>
                         </a>
                         <!-- Hover icon -->
-                        <div class="hover-effect ml-4"></div>
+                        <div class="hover-effect ml-4 w-2 h-2 lg:w-3 lg:h-3"></div>
                     </li>
                     <!-- Gifts -->
                     <li class="flex items-center pt-3 cursor-pointer">
                         <!-- Image -->
-                        <div><img class="w-28" src="http://localhost:8888/oliorama/wp-content/uploads/2021/10/menu-gift.png" alt="Gifts"/></div>
+                        <div class="lg:mr-5">
+                            <img class="w-28 lg:w-36" src="http://localhost:8888/oliorama/wp-content/uploads/2021/10/menu-gift.png" alt="Gifts"/>
+                        </div>
                         <!-- Item -->
                         <a href="http://localhost:8888/oliorama/gifts/">
-                            <div><h1 class="text-white text-xl font-bold">Gifts</h1></div>
+                            <div><h1 class="text-white text-xl lg:text-3xl font-bold">Gifts</h1></div>
                         </a>
                         <!-- Hover icon -->
-                        <div class="hover-effect ml-4"></div>
+                        <div class="hover-effect ml-4 w-2 h-2 lg:w-3 lg:h-3"></div>
                     </li>
                 </ul>
             </div>
             <!-- Line -->
-            <div class="border border-dark-gray border-solid mt-7"></div>
+            <div class="border border-dark-gray border-solid mt-7 lg:mt-9"></div>
             <!-- Menu Items -->
-            <div class="grid justify-center pt-9">
+            <div class="grid justify-center pt-9 lg:hidden">
                 <ul class="list-none text-center">
                     <li class="text-gray-cloud font-bold text-xl cursor-pointer">Awards</li>
                     <li class="text-gray-cloud font-bold text-xl cursor-pointer pt-9">About Us</li>

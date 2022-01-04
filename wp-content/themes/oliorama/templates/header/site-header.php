@@ -8,7 +8,7 @@
  */
 ?>
 
-<header class="flex justify-center items-center bg-davys-gray pl-4 pr-4 pt-8 pb-8 lg:pr-16 lg:pl-16" role="banner">
+<header class="flex justify-center items-center bg-davys-gray pl-4 pr-4 pt-8 pb-8 lg:pr-16 lg:pl-16 2xl:w-4/5" role="banner">
 
 	<!-- Left -->
 	<div class="flex-none w-20">
@@ -31,10 +31,19 @@
 
 	<!-- Center -->
 	<div class="flex-grow">
+
+		<!-- Mobile: Logo -->
 		<div class="flex justify-center items-center  lg:hidden">
 			<?php get_template_part( 'templates/header/logo' ); ?>
 		</div>
+
+		<!-- Desktop: Menu -->
+		<div class="lg:flex justify-center items-center hidden">
+			<?php get_template_part( 'templates/header/large-menu' ); ?>
+		</div>
+
 	</div>
+
 	<!-- Right -->
 	<div class="flex-none">
 		<div class="flex justify-center items-center gap-7 w-20">
@@ -51,8 +60,8 @@
 			</div>
 			<!-- basket -->
 			<div>
-				<div class="flex justify-center items-center rounded-full w-8 h-8 bg-opacity-70 bg-carbon-gray">
-					<p class="text-gray-cloud font-normal text-base">
+				<div class="flex justify-center items-center rounded-full w-8 h-8 lg:w-10 lg:h-10 bg-opacity-70 bg-carbon-gray">
+					<p class="text-gray-cloud font-normal text-base lg:text-xl">
 						<?php echo WC()->cart->cart_contents_count ?>
 					</p>
 				</div>
