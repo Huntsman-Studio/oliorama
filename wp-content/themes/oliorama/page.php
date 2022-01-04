@@ -4,8 +4,14 @@
 <div class="bg-davys-gray pt-12 pl-4 pr-4 pb-10">
 
     <?php
-        if(is_page(47)){
+
+        // Olive Oil
+        if( is_page(47) ){
             get_template_part('templates/pages/olive_oil');
+        }
+
+        if( is_page(51) ){
+            get_template_part('templates/pages/honey');
         }
     ?>
     
