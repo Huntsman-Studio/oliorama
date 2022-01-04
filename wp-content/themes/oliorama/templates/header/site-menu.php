@@ -1,4 +1,4 @@
-<section id="nav" class="fixed w-full h-full overflow-scroll top-0 left-0 bg-gray-wolf pl-12 pr-9 pt-10 pb-16 hidden">
+<section id="nav" class="fixed w-full lg:w-2/5 h-full overflow-scroll top-0 left-0 bg-gray-wolf pl-12 pr-9 pt-10 pb-16 hidden">
     <div>
         <nav class="grid">
             <!-- Title -->
