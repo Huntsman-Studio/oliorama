@@ -46,6 +46,18 @@
 			document.getElementById('search-form').classList.add('hidden');
 			document.getElementById('main-body').classList.remove('overflow-hidden');
 		}
+
+		// Open Cart
+		function openCart(){
+			document.getElementById('cart-widget').classList.remove('hidden');
+			document.getElementById('main-body').classList.add('overflow-hidden');
+		}
+
+		// Close Cart
+		function closeCart(){
+			document.getElementById('cart-widget').classList.add('hidden');
+			document.getElementById('main-body').classList.remove('overflow-hidden');
+		}
 	</script>
 	<?php wp_head(); ?>
 </head>
@@ -58,6 +70,7 @@
 	<?php get_template_part( 'templates/header/site-header' ); ?>
 	<?php get_template_part( 'templates/header/site-menu' ); ?>
 	<?php get_template_part( 'templates/header/search-form' ); ?>
+	<?php get_template_part( 'templates/header/cart-widget' ); ?>
 
 	<div id="content" class="site-content">
 		<div id="primary" class="content-area">

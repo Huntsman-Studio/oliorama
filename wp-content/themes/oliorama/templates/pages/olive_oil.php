@@ -1,15 +1,18 @@
-<div class="flex flex-col justify-center items-center pl-6 pr-6 max-w-full">
+<div class="flex flex-col justify-center items-center pl-6 pr-6 max-w-full w-full">
 
-    <div>
+    <div class="lg:max-w-3xl">
         <h2 class="text-white font-extrabold text-center text-xl">Extra Virgin Olive Oil</h2>
 
         <p class="pt-4 font-normal text-left text-white text-sm">In Greece more and more olive oil producers are changing their olive groves from conventional to organic. In organic olive oil farming, no chemical fertilizers or pesticides are used at any stage of production, harvesting is done by hand or mechanized harvest machines, while olive oil is produced by cold extraction at low temperatures to ensure the best, most natural and safest result.</p>
 
-        <h3 class="pt-8 text-white font-bold text-left text-lg">Daily Treasure</h3>
     </div>
 
-    <div>
-        <div class="flex justify-start items-center overflow-hidden">
+    <div class="pt-8 lg:w-full lg:max-w-5xl">
+        <h3 class="text-white font-bold text-left text-lg">Daily Treasure</h3>
+    </div>
+
+    <div class="lg:max-w-5xl lg:w-full">
+        <div class="flex justify-start items-center overflow-y-hidden overflow-x-scroll">
             <!-- Loop Products -->
             <?php
 
@@ -45,15 +48,17 @@
     </div>
 
     <!-- Other Products -->
-    <div class="pt-20 w-full">
+    <div class="pt-20 w-full lg:max-w-5xl">
         <div>
             <h2 class="text-light-gray font-bold text-lg text-left">More Products from Oliorama</h2>
         <div>
-        <div class="rounded-xl bg-oliorama-honey bg-cover w-full pt-4 pb-40 mt-5">
-            <h3 class="text-white font-bold text-xl text-center">Oliorama Honey</h3>
-        </div>
-        <div class="rounded-xl bg-oliorama-honey bg-cover w-full pt-4 pb-40 mt-5">
-            <h3 class="text-white font-bold text-xl text-center">Oliorama Herbs</h3>
+        <div class="lg:flex lg:justify-center lg:items-center lg:gap-16">
+            <div class="rounded-xl bg-oliorama-honey bg-cover w-full pt-4 pb-40 mt-5">
+                <h3 class="text-white font-bold text-xl text-center">Oliorama Honey</h3>
+            </div>
+            <div class="rounded-xl bg-oliorama-honey bg-cover w-full pt-4 pb-40 mt-5">
+                <h3 class="text-white font-bold text-xl text-center">Oliorama Herbs</h3>
+            </div>
         </div>
     </div>
 </div>

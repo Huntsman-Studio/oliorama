@@ -37,6 +37,21 @@ svg.search-icon{
     }
 }
 
+// Olive icon
+svg.olive{
+    .a {
+        fill: #ffbc21;
+    }
+
+    .b {
+        filter: url(#a);
+    }
+}
+
+div.olive-cart{
+    background: rgba(255, 192, 33, 0.15);
+}
+
 // Menu ul
 ul.menu{ 
     // border-bottom: 1px solid #333333;
@@ -122,6 +137,20 @@ div.bullet:hover{
 
 // Search form
 section#search-form{
+    // x-icon
+    svg.x-icon {
+        .a {
+            fill: none;
+            stroke: #ccc;
+            stroke-linecap: round;
+            stroke-width: 1.5px;
+        }
+    }
+}
+
+// cart form
+div#cart-icon-x {
+
     // x-icon
     svg.x-icon {
         .a {
