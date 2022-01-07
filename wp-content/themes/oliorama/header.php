@@ -52,7 +52,7 @@
 
 <body id="main-body" <?php body_class(); ?>>
 <?php wp_body_open(); ?>
-<div id="page" class="site">
+<div id="page" class="site 2xl:max-w-screen-2xl">
 	<a class="skip-link screen-reader-text" href="#content"></a>
 
 	<?php get_template_part( 'templates/header/site-header' ); ?>

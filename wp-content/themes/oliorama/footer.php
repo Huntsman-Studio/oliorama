@@ -10,10 +10,10 @@
 			</main><!-- #main -->
 		</div><!-- #primary -->
 	</div><!-- #content -->
-	<footer id="colophon" class="bg-gray-wolf pl-10 pr-10 pt-16 pb-10" role="contentinfo">
+	<footer id="colophon" class="bg-gray-wolf pl-10 pr-10 pt-16 pb-10 w-full" role="contentinfo">
 
-        <div class="grid justify-center w-full">
-			<!-- logo -->
+        <div class="grid justify-center w-full 2xl:max-w-screen-2xl">
+			<!-- logo --> 
 			<div class="pb-16 lg:grid lg:justify-items-center">
 				<?php get_template_part( 'templates/footer/footer-logo' ); ?>
 			</div>
