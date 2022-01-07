@@ -19,4 +19,13 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit; // Exit if accessed directly.
 }
 
-the_title( '<h1 class="product_title entry-title">', '</h1>' );
+global $product;
+
+the_title( '<h1 class="text-white font-bold text-3xl">', '</h1>' ); 
+
+?>
+
+<!-- Short description -->
+<p class="pt-4 text-gray-cloud font-normal text-base pb-10">
+	<?php echo $product->get_short_description(); ?>
+</p>

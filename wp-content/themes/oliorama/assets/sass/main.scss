@@ -3,6 +3,7 @@
 @import "tailwindcss/components";
 @import "tailwindcss/utilities";
 
+// Body
 body{
     background-color: #0c0c0c;
 }
@@ -130,4 +131,49 @@ section#search-form{
             stroke-width: 1.5px;
         }
     }
+}
+
+// Woocommerce
+// Breadcrumbs
+nav.woocommerce-breadcrumb{
+    display: none;
+}
+
+// Add to Cart Button
+button#add-to-cart-button{
+    background: linear-gradient(90deg, #ffbc21, #ffd21d);
+}
+
+// Reset Variations
+a.reset_variations {
+    display: none !important;
+}
+
+// Product description
+// div.pro-desc{
+//     p{
+//         font-size: 0.875rem;
+//         line-height: 1.25rem;
+//         color: #fff;
+//         font-weight: normal;
+//     }
+// }
+
+// Variations
+.woo-variation-swatches.wvs-style-squared .variable-items-wrapper .variable-item.button-variable-item {
+    width: 118px !important;
+    height: 48px;
+    background: #333333;
+    border-radius: 24px;
+    font-weight: normal;
+    font-size: 14px;
+    color: #fff;
+}
+// Selected
+
+.woo-variation-swatches .variable-items-wrapper .variable-item:not(.radio-variable-item).selected {
+    box-shadow: 0px 0px 30px 0px rgba(255, 255, 255, 0.45);
+    background-color: #fff;
+    font-weight: bold;
+    color: #000;
 }

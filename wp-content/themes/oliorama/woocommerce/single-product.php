@@ -18,44 +18,62 @@
 if ( ! defined( 'ABSPATH' ) ) {
 	exit; // Exit if accessed directly
 }
-
 get_header( 'shop' ); ?>
+	<div class="pl-8 pr-8 pt-10">
+		<?php
+			/**
+			 * woocommerce_before_main_content hook.
+			 *
+			 * @hooked woocommerce_output_content_wrapper - 10 (outputs opening divs for the content)
+			 * @hooked woocommerce_breadcrumb - 20
+			 */
+			do_action( 'woocommerce_before_main_content' );
+		?>
 
-	<?php
-		/**
-		 * woocommerce_before_main_content hook.
-		 *
-		 * @hooked woocommerce_output_content_wrapper - 10 (outputs opening divs for the content)
-		 * @hooked woocommerce_breadcrumb - 20
-		 */
-		do_action( 'woocommerce_before_main_content' );
-	?>
+			<?php while ( have_posts() ) : ?>
+				<?php the_post(); ?>
 
-		<?php while ( have_posts() ) : ?>
-			<?php the_post(); ?>
+				<?php wc_get_template_part( 'content', 'single-product' ); ?>
 
-			<?php wc_get_template_part( 'content', 'single-product' ); ?>
+			<?php endwhile; // end of the loop. ?>
 
-		<?php endwhile; // end of the loop. ?>
+		<?php
+			/**
+			 * woocommerce_after_main_content hook.
+			 *
+			 * @hooked woocommerce_output_content_wrapper_end - 10 (outputs closing divs for the content)
+			 */
+			do_action( 'woocommerce_after_main_content' );
+		?>
 
-	<?php
-		/**
-		 * woocommerce_after_main_content hook.
-		 *
-		 * @hooked woocommerce_output_content_wrapper_end - 10 (outputs closing divs for the content)
-		 */
-		do_action( 'woocommerce_after_main_content' );
-	?>
+		<?php
+			/**
+			 * woocommerce_sidebar hook.
+			 *
+			 * @hooked woocommerce_get_sidebar - 10
+			 */
+			do_action( 'woocommerce_sidebar' );
+		?>
 
-	<?php
-		/**
-		 * woocommerce_sidebar hook.
-		 *
-		 * @hooked woocommerce_get_sidebar - 10
-		 */
-		do_action( 'woocommerce_sidebar' );
-	?>
+	</div>
+	
+	<!-- Description -->
+	<div class="bg-gray-wolf pro-desc text pl-8 pr-8 pt-8 pb-8">
+		<p class="text-white font-normal text-sm">
+			<?php // the_content(); ?>
+			<?php echo $product->get_description(); ?>
+		</p>
+	</div>
 
+	<!-- Related -->
+	<!-- <div class="pl-8 pr-8 pt-16">
+
+		<h3 class="text-white font-bold text-base">More products</h3>
+
+		<div class="flex justify-center items-center overflow-scroll">
+
+		</div >
+	</div> -->
 <?php
 get_footer( 'shop' );
 
