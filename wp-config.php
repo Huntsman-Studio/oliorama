@@ -26,7 +26,7 @@ define( 'DB_NAME', 'oliorama_db' );
 define( 'DB_USER', 'root' );
 
 /** MySQL database password */
-define( 'DB_PASSWORD', 'root' );
+define( 'DB_PASSWORD', '6073' );
 
 /** MySQL hostname */
 define( 'DB_HOST', 'localhost' );
