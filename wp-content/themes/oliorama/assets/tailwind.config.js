@@ -64,11 +64,13 @@ module.exports = {
 
       // backgorund image
       backgroundImage: {
-        'oliorama-honey': "url('http://localhost:8888/oliorama/wp-content/uploads/2021/11/quality-awarded-organic-products.png')",
-        'home-olive-oil': 'url("http://localhost:8888/oliorama/wp-content/uploads/2021/10/testimage.png")',
-        'home-honey': 'url("http://localhost:8888/oliorama/wp-content/uploads/2021/10/testimage.png")',
-        'home-herbs': 'url("http://localhost:8888/oliorama/wp-content/uploads/2021/10/testimage.png")',
-        'home-gifts': 'url("http://localhost:8888/oliorama/wp-content/uploads/2021/11/quality-awarded-organic-products.png")'
+        // 'homepagehoney': 'url("http://oliorama.com/wp-content/uploads/2022/01/Homepagehoney.png")',
+        'home-rewards': "url('http://oliorama.com/wp-content/uploads/2022/01/home-page-awards.jpg')",
+        'home-rewards-mb': "()",
+        'home-olive-oil': 'url("http://oliorama.com/wp-content/uploads/2022/01/Homepageoliveoil.png")',
+        'home-honey': 'url("http://oliorama.com/wp-content/uploads/2022/01/Homepagehoney.png")',
+        'home-herbs': 'url("http://oliorama.com/wp-content/uploads/2022/01/Homepageherbs.png")',
+        'home-gifts': 'url("http://oliorama.com/wp-content/uploads/2022/01/home-page-gift.jpg")'
         // 'footer-texture': "url('/img/footer-texture.png')",
       }
     },
