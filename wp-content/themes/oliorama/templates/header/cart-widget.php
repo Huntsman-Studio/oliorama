@@ -25,11 +25,11 @@
         } else {
             foreach ( WC()->cart->get_cart() as $cart_item_key => $cart_item ) {
                 $product = $cart_item['data'];
-                $product_id = $cart_item['product_id'];
-                $quantity = $cart_item['quantity'];
-                $price = WC()->cart->get_product_price( $product );
-                $subtotal = WC()->cart->get_product_subtotal( $product, $cart_item['quantity'] );
-                $link = $product->get_permalink( $cart_item );
+                // $product_id = $cart_item['product_id'];
+                // $quantity = $cart_item['quantity'];
+                // $price = WC()->cart->get_product_price( $product );
+                // $subtotal = WC()->cart->get_product_subtotal( $product, $cart_item['quantity'] );
+                // $link = $product->get_permalink( $cart_item );
                 // $attributes = $product->getAttributeText('liter');
                 // $attributes  = $cart_item['variation']['liter'];
                 
@@ -48,12 +48,20 @@
                             </a>
                         </div>
                         <!-- Details -->
-                        <div class="grid w-6/12">
+                        <div class="grid w-5/12">
                             <h5 class="text-white font-normal text-base"><?php echo $product->get_title(); ?></h5>
                         </div>
-                        <!-- Remove -->
+                        <!-- Price -->
                         <div class="grid w-3/12">
                             <p class="text-white font-bold text-base"><?php echo $product->get_price_html(); ?></p>
+                        </div>
+                        <!-- Remove -->
+                        <div class="grid w-1/12">
+                            <div id="remove-cart-item" class="bg-dim-gray flex justify-center items-center rounded-full w-6 h-6">
+                                <!-- <input id="product_id" type="hidden" value="<?php echo $product_id; ?>" /> -->
+                                <!-- <input id="cart_key" type="hidden" value="<?php echo $cart_item_key; ?>" /> -->
+                                <p class="text-white font-normal text-sm">x</p>
+                            </div>
                         </div>
                     </div>
                 <?php
@@ -62,7 +70,7 @@
     ?>
 
     <!-- Widget footer -->
-    <div class="fixed bottom-0 left-0 w-full lg:w-2/5 pr-6 pl-6 pb-10">
+    <div class="fixed bottom-0 right-0 w-full lg:w-2/5 pr-6 pl-6 pb-10">
         <div class="border-t-2 border-dim-gray"></div>
         <div class="flex justify-between items-center pt-6">
             <div>
@@ -75,7 +83,17 @@
             </div>
         </div>
         <div class="w-full pt-9 flex justify-center">
-            <button onclick="closeCart()" class="bg-white pt-4 pb-4 pl-14 pr-14 text-black font-bold text-base rounded-full">Close Tab</button>
+            <?php
+                // Check if cart is empty 
+                if ( WC()->cart->is_empty() ) {
+                ?>
+                    <button onclick="closeCart()" class="bg-white pt-4 pb-4 pl-14 pr-14 text-black font-bold text-base rounded-full">Close Tab</button>
+                <?php
+                } else{
+                    ?>
+                        <button onclick="window.open('http://localhost/oliorama')" class="primary pt-4 pb-4 pl-14 pr-14 text-black font-bold text-base rounded-full">Checkout</button>
+                    <?php
+                } ?>
         </div>
     </div>
 

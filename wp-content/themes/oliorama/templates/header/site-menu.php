@@ -14,10 +14,10 @@
                     <li class="flex items-center cursor-pointer">
                         <!-- Image -->
                         <div class="lg:mr-5">
-                            <img class="w-28 lg:w-36" src="http://localhost:8888/oliorama/wp-content/uploads/2021/10/menu-olive-oil.png" alt="Olive Oil"/>
+                            <img class="w-28 lg:w-36" src="http://oliorama.com/wp-content/uploads/2021/10/menu-olive-oil.png" alt="Olive Oil"/>
                         </div>
                         <!-- Item -->
-                        <a href="http://localhost:8888/oliorama/olive-oil/">
+                        <a href="http://oliorama.com/olive-oil/">
                             <div><h1 class="text-white text-xl lg:text-3xl font-bold">Olive Oil</h1></div>
                         </a>
                         <!-- Hover icon -->
@@ -27,10 +27,10 @@
                     <li class="flex items-center pt-3 cursor-pointer">
                         <!-- Image -->
                         <div class="lg:mr-5">
-                            <img class="w-28 lg:w-36" src="http://localhost:8888/oliorama/wp-content/uploads/2021/10/menu-honey.png" alt="Honey"/>
+                            <img class="w-28 lg:w-36" src="http://oliorama.com/wp-content/uploads/2021/10/menu-honey.png" alt="Honey"/>
                         </div>
                         <!-- Item -->
-                        <a href="http://localhost:8888/oliorama/honey/">
+                        <a href="http://oliorama.com/honey/">
                             <div><h1 class="text-white text-xl lg:text-3xl font-bold">Honey</h1></div>
                         </a>
                         <!-- Hover icon -->
@@ -40,10 +40,10 @@
                     <li class="flex items-center pt-3 cursor-pointer">
                         <!-- Image -->
                         <div class="lg:mr-5">
-                            <img class="w-28 lg:w-36" src="http://localhost:8888/oliorama/wp-content/uploads/2021/10/menu-herbs.png" alt="Herbs"/>
+                            <img class="w-28 lg:w-36" src="http://oliorama.com/wp-content/uploads/2021/10/menu-herbs.png" alt="Herbs"/>
                         </div>
                         <!-- Item -->
-                        <a href="http://localhost:8888/oliorama/herbs/">
+                        <a href="http://oliorama.com/herbs/">
                             <div><h1 class="text-white text-xl lg:text-3xl font-bold">Herbs</h1></div>
                         </a>
                         <!-- Hover icon -->
@@ -53,10 +53,10 @@
                     <li class="flex items-center pt-3 cursor-pointer">
                         <!-- Image -->
                         <div class="lg:mr-5">
-                            <img class="w-28 lg:w-36" src="http://localhost:8888/oliorama/wp-content/uploads/2021/10/menu-gift.png" alt="Gifts"/>
+                            <img class="w-28 lg:w-36" src="http://oliorama.com/wp-content/uploads/2021/10/menu-gift.png" alt="Gifts"/>
                         </div>
                         <!-- Item -->
-                        <a href="http://localhost:8888/oliorama/gifts/">
+                        <a href="http://oliorama.com/gifts/">
                             <div><h1 class="text-white text-xl lg:text-3xl font-bold">Gifts</h1></div>
                         </a>
                         <!-- Hover icon -->

@@ -50,14 +50,14 @@
 
 			<!-- search icon -->
 			<div>
-				<div class="flex justify-center items-center cursor-pointer">
+				<div class="hidden  justify-center items-center cursor-pointer">
 					<?php get_template_part( 'templates/svg/search-icon' ); ?>
 				</div>
 			</div>
 
 			<!-- basket -->
 			<div>
-				<div onclick="openCart()" class="flex justify-center items-center rounded-full w-8 h-8 lg:w-10 lg:h-10 bg-opacity-70 bg-carbon-gray">
+				<div onclick="openCart()" class="flex justify-center items-center rounded-full w-8 h-8 lg:w-10 lg:h-10 bg-opacity-70 bg-carbon-gray cursor-pointer">
 					<p class="text-gray-cloud font-normal text-base lg:text-xl">
 						<?php echo WC()->cart->cart_contents_count ?>
 					</p>
